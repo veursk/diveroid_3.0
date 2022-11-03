@@ -8,12 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		4364D8692913963500FD6219 /* Diveroid300App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8682913963500FD6219 /* Diveroid300App.swift */; };
-		4364D86B2913963500FD6219 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D86A2913963500FD6219 /* ContentView.swift */; };
+		4364D86B2913963500FD6219 /* DiveMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D86A2913963500FD6219 /* DiveMainView.swift */; };
 		4364D86D2913963800FD6219 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4364D86C2913963800FD6219 /* Assets.xcassets */; };
 		4364D8702913963800FD6219 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4364D86F2913963800FD6219 /* Preview Assets.xcassets */; };
 		4364D87A2913963900FD6219 /* Diveroid300Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8792913963900FD6219 /* Diveroid300Tests.swift */; };
 		4364D8842913963900FD6219 /* Diveroid300UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8832913963900FD6219 /* Diveroid300UITests.swift */; };
 		4364D8862913963900FD6219 /* Diveroid300UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8852913963900FD6219 /* Diveroid300UITestsLaunchTests.swift */; };
+		4364D89529139A3200FD6219 /* ComputerArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D89429139A3200FD6219 /* ComputerArea.swift */; };
+		4364D89929139B7600FD6219 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D89829139B7600FD6219 /* Constants.swift */; };
+		4364D89D2913AC9E00FD6219 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D89C2913AC9E00FD6219 /* CameraManager.swift */; };
+		4364D89F2913ACEB00FD6219 /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D89E2913ACEB00FD6219 /* CameraError.swift */; };
+		4364D8A12913B28000FD6219 /* FrameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8A02913B28000FD6219 /* FrameManager.swift */; };
+		4364D8A32913B58200FD6219 /* FrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8A22913B58200FD6219 /* FrameView.swift */; };
+		4364D8A52913B6D500FD6219 /* DiveMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8A42913B6D500FD6219 /* DiveMainViewModel.swift */; };
+		4364D8A82913B7DF00FD6219 /* CGImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8A72913B7DF00FD6219 /* CGImageExtension.swift */; };
+		4364D8AA2913B8DA00FD6219 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8A92913B8DA00FD6219 /* ErrorView.swift */; };
+		4364D8AC2913DAE700FD6219 /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8AB2913DAE700FD6219 /* ButtonsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +46,7 @@
 /* Begin PBXFileReference section */
 		4364D8652913963500FD6219 /* Diveroid300.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Diveroid300.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4364D8682913963500FD6219 /* Diveroid300App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diveroid300App.swift; sourceTree = "<group>"; };
-		4364D86A2913963500FD6219 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4364D86A2913963500FD6219 /* DiveMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveMainView.swift; sourceTree = "<group>"; };
 		4364D86C2913963800FD6219 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4364D86F2913963800FD6219 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4364D8752913963900FD6219 /* Diveroid300Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Diveroid300Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +54,16 @@
 		4364D87F2913963900FD6219 /* Diveroid300UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Diveroid300UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4364D8832913963900FD6219 /* Diveroid300UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diveroid300UITests.swift; sourceTree = "<group>"; };
 		4364D8852913963900FD6219 /* Diveroid300UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diveroid300UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4364D89429139A3200FD6219 /* ComputerArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerArea.swift; sourceTree = "<group>"; };
+		4364D89829139B7600FD6219 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		4364D89C2913AC9E00FD6219 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		4364D89E2913ACEB00FD6219 /* CameraError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraError.swift; sourceTree = "<group>"; };
+		4364D8A02913B28000FD6219 /* FrameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameManager.swift; sourceTree = "<group>"; };
+		4364D8A22913B58200FD6219 /* FrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameView.swift; sourceTree = "<group>"; };
+		4364D8A42913B6D500FD6219 /* DiveMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveMainViewModel.swift; sourceTree = "<group>"; };
+		4364D8A72913B7DF00FD6219 /* CGImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGImageExtension.swift; sourceTree = "<group>"; };
+		4364D8A92913B8DA00FD6219 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		4364D8AB2913DAE700FD6219 /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +115,10 @@
 			isa = PBXGroup;
 			children = (
 				4364D8682913963500FD6219 /* Diveroid300App.swift */,
-				4364D86A2913963500FD6219 /* ContentView.swift */,
+				4364D89B2913AC6100FD6219 /* Camera */,
+				4364D8A62913B7C700FD6219 /* Extensions */,
+				4364D89729139B5600FD6219 /* Models */,
+				4364D892291399CB00FD6219 /* Views */,
 				4364D86C2913963800FD6219 /* Assets.xcassets */,
 				4364D86E2913963800FD6219 /* Preview Content */,
 			);
@@ -125,6 +148,53 @@
 				4364D8852913963900FD6219 /* Diveroid300UITestsLaunchTests.swift */,
 			);
 			path = Diveroid300UITests;
+			sourceTree = "<group>";
+		};
+		4364D892291399CB00FD6219 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4364D86A2913963500FD6219 /* DiveMainView.swift */,
+				4364D8AB2913DAE700FD6219 /* ButtonsView.swift */,
+				4364D8A22913B58200FD6219 /* FrameView.swift */,
+				4364D8A92913B8DA00FD6219 /* ErrorView.swift */,
+				4364D89329139A1F00FD6219 /* General */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4364D89329139A1F00FD6219 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				4364D89429139A3200FD6219 /* ComputerArea.swift */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		4364D89729139B5600FD6219 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4364D89829139B7600FD6219 /* Constants.swift */,
+				4364D8A42913B6D500FD6219 /* DiveMainViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4364D89B2913AC6100FD6219 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				4364D89C2913AC9E00FD6219 /* CameraManager.swift */,
+				4364D8A02913B28000FD6219 /* FrameManager.swift */,
+				4364D89E2913ACEB00FD6219 /* CameraError.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		4364D8A62913B7C700FD6219 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4364D8A72913B7DF00FD6219 /* CGImageExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,8 +327,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4364D86B2913963500FD6219 /* ContentView.swift in Sources */,
+				4364D8A32913B58200FD6219 /* FrameView.swift in Sources */,
+				4364D8A82913B7DF00FD6219 /* CGImageExtension.swift in Sources */,
+				4364D89529139A3200FD6219 /* ComputerArea.swift in Sources */,
+				4364D86B2913963500FD6219 /* DiveMainView.swift in Sources */,
 				4364D8692913963500FD6219 /* Diveroid300App.swift in Sources */,
+				4364D89929139B7600FD6219 /* Constants.swift in Sources */,
+				4364D8AC2913DAE700FD6219 /* ButtonsView.swift in Sources */,
+				4364D8A52913B6D500FD6219 /* DiveMainViewModel.swift in Sources */,
+				4364D89D2913AC9E00FD6219 /* CameraManager.swift in Sources */,
+				4364D8A12913B28000FD6219 /* FrameManager.swift in Sources */,
+				4364D89F2913ACEB00FD6219 /* CameraError.swift in Sources */,
+				4364D8AA2913B8DA00FD6219 /* ErrorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,11 +500,13 @@
 				DEVELOPMENT_TEAM = GMFX87CRW9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app need...";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app need...";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationLandscapeRight;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -434,7 +516,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -449,11 +531,13 @@
 				DEVELOPMENT_TEAM = GMFX87CRW9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app need...";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app need...";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationLandscapeRight;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -463,7 +547,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

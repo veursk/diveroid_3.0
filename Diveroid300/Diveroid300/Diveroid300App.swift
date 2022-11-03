@@ -11,7 +11,7 @@ import SwiftUI
 struct Diveroid300App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            DiveMainView()
         }
     }
 }
