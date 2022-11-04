@@ -10,19 +10,30 @@ import SwiftUI
 struct ButtonsView: View {
     
     @Binding var showOptionsCells: Bool
-    
+    @Binding var isWideAngleSelected: Bool
+    @Binding var isNormalAngleSelected: Bool
+    @Binding var isZoomAngleSelected: Bool
+    @Binding var isSelfieAngleSelected: Bool
+
     var body: some View {
         VStack(spacing: 30){
-            topButtonView(showOptionCells: $showOptionsCells).position(CGPoint(x: 730, y: 100))
-            middleButtonView().position(CGPoint(x: 780, y: 70))
-            bottomButtonView().position(CGPoint(x: 730, y: 40))
+            topButtonView(showOptionsCells: $showOptionsCells, isWideAngleSelected: $isWideAngleSelected, isNormalAngleSelected: $isNormalAngleSelected, isZoomAngleSelected: $isZoomAngleSelected, isSelfieAngleSelected: $isSelfieAngleSelected)
+                .position(CGPoint(x: 730, y: 100))
+            middleButtonView()
+                .position(CGPoint(x: 780, y: 70))
+            bottomButtonView()
+                .position(CGPoint(x: 730, y: 40))
         }
     }
 }
 
 struct topButtonView: View {
     
-    @Binding var showOptionCells: Bool
+    @Binding var showOptionsCells: Bool
+    @Binding var isWideAngleSelected: Bool
+    @Binding var isNormalAngleSelected: Bool
+    @Binding var isZoomAngleSelected: Bool
+    @Binding var isSelfieAngleSelected: Bool
     
     var body: some View {
         ZStack{
@@ -31,7 +42,24 @@ struct topButtonView: View {
             .opacity(0.2)
             .frame(width: 94.0, height: 94.0)
           Button(action: {
-              self.showOptionCells.toggle()
+              if !showOptionsCells {
+                  showOptionsCells.toggle()
+              }
+              else {
+                  if isWideAngleSelected {
+                      isNormalAngleSelected.toggle()
+                      isWideAngleSelected.toggle()
+                  } else if isNormalAngleSelected {
+                      isZoomAngleSelected.toggle()
+                      isNormalAngleSelected.toggle()
+                  } else if isZoomAngleSelected {
+                      isSelfieAngleSelected.toggle()
+                      isZoomAngleSelected.toggle()
+                  } else if isSelfieAngleSelected {
+                      isWideAngleSelected.toggle()
+                      isSelfieAngleSelected.toggle()
+                  }
+              }
           },
                  label: {
             Circle()
@@ -81,6 +109,10 @@ struct bottomButtonView: View {
 
 struct ButtonsView_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonsView(showOptionsCells: .constant(false))
+        ButtonsView(showOptionsCells: .constant(false),
+                    isWideAngleSelected: .constant(true),
+                    isNormalAngleSelected: .constant(false),
+                    isZoomAngleSelected: .constant(false),
+                    isSelfieAngleSelected: .constant(false))
     }
 }
