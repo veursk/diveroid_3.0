@@ -10,15 +10,18 @@ import SwiftUI
 struct DiveMainView: View {
     
     @StateObject private var model = DiveMainViewModel()
-    
+    @State var showOptionCells = false
     
     var body: some View {
         ZStack {
             FrameView(image: model.frame)
                 .edgesIgnoringSafeArea(.all)
+            if showOptionCells {
+                TopButtonInteractionView()
+            }
             HStack{
                 Spacer()
-                ButtonsView()
+                ButtonsView(showOptionsCells: $showOptionCells)
             }
             ErrorView(error: model.error)
         }

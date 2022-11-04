@@ -10,7 +10,6 @@ import SwiftUI
 struct TopButtonInteractionView: View {
     var body: some View {
         ZStack{
-            Color(.gray)
             VStack{
                 HStack(spacing: 0.5){
                     optionCellView(optionName: "광각", optionImageName: "wideAngleOption")

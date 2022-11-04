@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct ButtonsView: View {
+    
+    @Binding var showOptionsCells: Bool
+    
     var body: some View {
         VStack(spacing: 30){
-            topButtonView().position(CGPoint(x: 730, y: 100))
+            topButtonView(showOptionCells: $showOptionsCells).position(CGPoint(x: 730, y: 100))
             middleButtonView().position(CGPoint(x: 780, y: 70))
             bottomButtonView().position(CGPoint(x: 730, y: 40))
         }
@@ -18,6 +21,9 @@ struct ButtonsView: View {
 }
 
 struct topButtonView: View {
+    
+    @Binding var showOptionCells: Bool
+    
     var body: some View {
         ZStack{
           Circle()
@@ -25,6 +31,7 @@ struct topButtonView: View {
             .opacity(0.2)
             .frame(width: 94.0, height: 94.0)
           Button(action: {
+              self.showOptionCells.toggle()
           },
                  label: {
             Circle()
@@ -74,6 +81,6 @@ struct bottomButtonView: View {
 
 struct ButtonsView_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonsView()
+        ButtonsView(showOptionsCells: .constant(false))
     }
 }
