@@ -19,7 +19,7 @@ struct ButtonsView: View {
         VStack(spacing: 30){
             topButtonView(showOptionsCells: $showOptionsCells, isWideAngleSelected: $isWideAngleSelected, isNormalAngleSelected: $isNormalAngleSelected, isZoomAngleSelected: $isZoomAngleSelected, isSelfieAngleSelected: $isSelfieAngleSelected)
                 .position(CGPoint(x: 730, y: 100))
-            middleButtonView()
+            middleButtonView(showOptionsCells: $showOptionsCells)
                 .position(CGPoint(x: 780, y: 70))
             bottomButtonView()
                 .position(CGPoint(x: 730, y: 40))
@@ -75,6 +75,9 @@ struct topButtonView: View {
     }
 
 struct middleButtonView: View {
+    
+    @Binding var showOptionsCells: Bool
+    
     var body: some View {
         ZStack{
           Circle()
@@ -82,6 +85,9 @@ struct middleButtonView: View {
             .opacity(0.2)
             .frame(width: 94.0, height: 94.0)
           Button(action: {
+              if showOptionsCells {
+                  showOptionsCells.toggle()
+              }
           },
                  label: {
             Circle()
