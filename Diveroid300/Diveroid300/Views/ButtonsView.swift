@@ -87,7 +87,11 @@ struct middleButtonView: View {
           Button(action: {
               if showOptionsCells {
                   showOptionsCells.toggle()
+              } else {
+                  FrameManager.shared.isSavingFrame = true
               }
+              
+              
           },
                  label: {
             Circle()

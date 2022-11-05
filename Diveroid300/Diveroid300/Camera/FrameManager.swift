@@ -41,6 +41,8 @@ extension FrameManager: AVCaptureVideoDataOutputSampleBufferDelegate {
             if isSavingFrame == true {
                 saveFrame(sampleBuffer: buffer)
                 isSavingFrame = false
+                print("\(String(describing: CameraManager.shared.device?.exposureDuration)))")
+                print("\(String(describing: CameraManager.shared.device?.iso)))")
             }
         }
     }
