@@ -10,6 +10,12 @@ import UIKit
 
 enum Constants {
     enum fontSize {
-        
+    }
+    
+    enum CameraOptionName {
+        case WideCameraOption
+        case NormalCameraOption
+        case ZoomCameraOption
+        case SelfieCameraOption
     }
 }

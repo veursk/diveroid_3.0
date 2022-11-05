@@ -117,6 +117,7 @@ class CameraManager: ObservableObject {
         
         session.sessionPreset = .hd4K3840x2160
         /// 일단 4K로 설정함 (4K 지원여부 따져봐야함)
+        /// 기기별 설정 필요
         status = .configured
     }
     
@@ -187,82 +188,212 @@ class CameraManager: ObservableObject {
     /// switchCamera Method는 문제 없음..
     /// 테스트 실기기인 아이폰 11 (Green)에 .builtindual camera를 지원안함... -> 어쨌든 dual camera 안쓸거지만.. 이유는 찾음
     
-    func changCameraOptionModified() {
+    func changCameraOptionModified(CameraOptionName: Constants.CameraOptionName) {
         sessionQueue.async {
             
             defer {
                 self.session.commitConfiguration()
             }
             
-            guard let device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back) else {
-                self.set(error: .cameraUnavailable)
-                self.status = .failed
-                return
-            }
-            
-            var videoInput: AVCaptureDeviceInput
-            
-            do {
-                videoInput = try AVCaptureDeviceInput(device: device)
-            } catch {
-                print("Could not create video device inputL \(error)")
-                return
-            }
-            
-            self.session.beginConfiguration()
-            
-            self.session.removeInput(self.input!)
-            
-            if self.session.canAddInput(videoInput) {
-                self.session.addInput(videoInput)
-                self.input = videoInput
-            } else {
-                print("Could not add video device input to the session")
-                self.session.addInput(self.input!)
-            }
-            
-        }
-    }
-    
-    
-    
-    func changeCameraOption() {
-        sessionQueue.async {
-            self.session.beginConfiguration()
-            
-            defer {
-                self.session.commitConfiguration()
-            }
-            
-            self.device = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back)
-            
-            guard let camera = self.device else {
-                self.set(error: .cameraUnavailable)
-                self.status = .failed
-                return
-            }
-            
-            do {
-                self.input = try AVCaptureDeviceInput(device: camera)
-                
-                if self.session.canAddInput(self.input!) {
-                    self.session.addInput(self.input!)
-                } else {
-                    self.set(error: .cannotAddInput)
+            switch CameraOptionName {
+            case Constants.CameraOptionName.WideCameraOption:
+                guard let device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back) else {
+                    self.set(error: .cameraUnavailable)
                     self.status = .failed
                     return
                 }
-            } catch {
-                self.set(error: .createCaptureInput(error))
-                self.status = .failed
-                return
+                
+                var videoInput: AVCaptureDeviceInput
+                
+                do {
+                    videoInput = try AVCaptureDeviceInput(device: device)
+                } catch {
+                    print("Could not create video device inputL \(error)")
+                    return
+                }
+                
+                self.session.beginConfiguration()
+                
+                self.session.removeInput(self.input!)
+                
+                if self.session.canAddInput(videoInput) {
+                    self.session.addInput(videoInput)
+                    self.input = videoInput
+                } else {
+                    print("Could not add video device input to the session")
+                    self.session.addInput(self.input!)
+                }
+                
+            case Constants.CameraOptionName.NormalCameraOption:
+                guard let device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back) else {
+                    self.set(error: .cameraUnavailable)
+                    self.status = .failed
+                    return
+                }
+                
+                var videoInput: AVCaptureDeviceInput
+                
+                do {
+                    videoInput = try AVCaptureDeviceInput(device: device)
+                } catch {
+                    print("Could not create video device inputL \(error)")
+                    return
+                }
+                
+                self.session.beginConfiguration()
+                
+                self.session.removeInput(self.input!)
+                
+                if self.session.canAddInput(videoInput) {
+                    self.session.addInput(videoInput)
+                    self.input = videoInput
+                } else {
+                    print("Could not add video device input to the session")
+                    self.session.addInput(self.input!)
+                }
+                
+            case Constants.CameraOptionName.ZoomCameraOption:
+                guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
+                    self.set(error: .cameraUnavailable)
+                    self.status = .failed
+                    return
+                }
+                
+                var videoInput: AVCaptureDeviceInput
+                
+                do {
+                    videoInput = try AVCaptureDeviceInput(device: device)
+                } catch {
+                    print("Could not create video device inputL \(error)")
+                    return
+                }
+                
+                self.session.beginConfiguration()
+                
+                self.session.removeInput(self.input!)
+                
+                if self.session.canAddInput(videoInput) {
+                    self.session.addInput(videoInput)
+                    self.input = videoInput
+                } else {
+                    print("Could not add video device input to the session")
+                    self.session.addInput(self.input!)
+                }
+                
+                // Zoom 설정 구현 코드
+                // Catch문 수정 필요
+            
+                do {
+                    try device.lockForConfiguration()
+                    device.videoZoomFactor = 2.0
+                    device.unlockForConfiguration()
+                } catch {
+                    
+                }
+                
+            case Constants.CameraOptionName.SelfieCameraOption:
+                guard let device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back) else {
+                    self.set(error: .cameraUnavailable)
+                    self.status = .failed
+                    return
+                }
+                
+                var videoInput: AVCaptureDeviceInput
+                
+                do {
+                    videoInput = try AVCaptureDeviceInput(device: device)
+                } catch {
+                    print("Could not create video device inputL \(error)")
+                    return
+                }
+                
+                self.session.beginConfiguration()
+                
+                self.session.removeInput(self.input!)
+                
+                if self.session.canAddInput(videoInput) {
+                    self.session.addInput(videoInput)
+                    self.input = videoInput
+                } else {
+                    print("Could not add video device input to the session")
+                    self.session.addInput(self.input!)
+                }
+                
             }
             
-            self.session.sessionPreset = .hd4K3840x2160
-            self.status = .configured
-              
+            
+            
+            
+            
+//            guard let device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back) else {
+//                self.set(error: .cameraUnavailable)
+//                self.status = .failed
+//                return
+//            }
+//
+//            var videoInput: AVCaptureDeviceInput
+//
+//            do {
+//                videoInput = try AVCaptureDeviceInput(device: device)
+//            } catch {
+//                print("Could not create video device inputL \(error)")
+//                return
+//            }
+//
+//            self.session.beginConfiguration()
+//
+//            self.session.removeInput(self.input!)
+//
+//            if self.session.canAddInput(videoInput) {
+//                self.session.addInput(videoInput)
+//                self.input = videoInput
+//            } else {
+//                print("Could not add video device input to the session")
+//                self.session.addInput(self.input!)
+//            }
+            
         }
     }
+    
+    
+    
+//    func changeCameraOption() {
+//        sessionQueue.async {
+//            self.session.beginConfiguration()
+//
+//            defer {
+//                self.session.commitConfiguration()
+//            }
+//
+//            self.device = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back)
+//
+//            guard let camera = self.device else {
+//                self.set(error: .cameraUnavailable)
+//                self.status = .failed
+//                return
+//            }
+//
+//            do {
+//                self.input = try AVCaptureDeviceInput(device: camera)
+//
+//                if self.session.canAddInput(self.input!) {
+//                    self.session.addInput(self.input!)
+//                } else {
+//                    self.set(error: .cannotAddInput)
+//                    self.status = .failed
+//                    return
+//                }
+//            } catch {
+//                self.set(error: .createCaptureInput(error))
+//                self.status = .failed
+//                return
+//            }
+//
+//            self.session.sessionPreset = .hd4K3840x2160
+//            self.status = .configured
+//
+//        }
+//    }
     
     
 }

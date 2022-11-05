@@ -49,16 +49,19 @@ struct topButtonView: View {
                   if isWideAngleSelected {
                       isNormalAngleSelected.toggle()
                       isWideAngleSelected.toggle()
-                      CameraManager.shared.changCameraOptionModified()
+                      CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.NormalCameraOption)
                   } else if isNormalAngleSelected {
                       isZoomAngleSelected.toggle()
                       isNormalAngleSelected.toggle()
+                      CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.ZoomCameraOption)
                   } else if isZoomAngleSelected {
                       isSelfieAngleSelected.toggle()
                       isZoomAngleSelected.toggle()
+                      CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.SelfieCameraOption)
                   } else if isSelfieAngleSelected {
                       isWideAngleSelected.toggle()
                       isSelfieAngleSelected.toggle()
+                      CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.WideCameraOption)
                   }
               }
           },
