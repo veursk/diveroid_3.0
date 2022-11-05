@@ -334,11 +334,12 @@ class CameraManager: ObservableObject {
                         self.session.addInput(self.input!)
                     }
                     
-//                    if preferredPosition == .front {
-//                        let videoConnection = self.videoOutput.connection(with: .video)
-//                        videoConnection?.videoOrientation = .landscapeRight
-//                        videoConnection?.isVideoMirrored = true
-//                    }
+                    // 전면의 경우 상하좌우 수정해줘야 함.
+                    if preferredPosition == .front {
+                        let videoConnection = self.videoOutput.connection(with: .video)
+                        videoConnection?.videoOrientation = .landscapeRight
+                        videoConnection?.isVideoMirrored = true
+                    }
                     
                 }
                 
