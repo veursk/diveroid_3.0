@@ -49,7 +49,7 @@ struct topButtonView: View {
                   if isWideAngleSelected {
                       isNormalAngleSelected.toggle()
                       isWideAngleSelected.toggle()
-                      CameraManager.shared.switchCamera()
+                      CameraManager.shared.changCameraOptionModified()
                   } else if isNormalAngleSelected {
                       isZoomAngleSelected.toggle()
                       isNormalAngleSelected.toggle()
