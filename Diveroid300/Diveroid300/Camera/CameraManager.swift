@@ -27,6 +27,8 @@ class CameraManager: ObservableObject {
     var input: AVCaptureDeviceInput?
     private var status = Status.unconfigured
     static let shared = CameraManager()
+    
+    // discoverySession도 다시 체크 필요함(기기별)
     private let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera,
                                                                                              .builtInWideAngleCamera],
                                                                                mediaType: .video,
@@ -292,31 +294,52 @@ class CameraManager: ObservableObject {
                 }
                 
             case Constants.CameraOptionName.SelfieCameraOption:
-                guard let device = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back) else {
-                    self.set(error: .cameraUnavailable)
-                    self.status = .failed
-                    return
+                // 그냥 여기다가 구현할까..?
+                // 아니면 switch method 사용할까..?
+                
+                let currentVideoDevice = self.input!.device
+                var preferredPosition = AVCaptureDevice.Position.unspecified
+                
+                switch currentVideoDevice.position {
+                case .unspecified, .front:
+                    preferredPosition = .back
+                    
+                case .back:
+                    preferredPosition = .front
+                    
+                @unknown default:
+                    fatalError("Unknown video device position.")
                 }
                 
-                var videoInput: AVCaptureDeviceInput
+                let devices = self.videoDeviceDiscoverySession.devices
                 
-                do {
-                    videoInput = try AVCaptureDeviceInput(device: device)
-                } catch {
-                    print("Could not create video device inputL \(error)")
-                    return
-                }
-                
-                self.session.beginConfiguration()
-                
-                self.session.removeInput(self.input!)
-                
-                if self.session.canAddInput(videoInput) {
-                    self.session.addInput(videoInput)
-                    self.input = videoInput
-                } else {
-                    print("Could not add video device input to the session")
-                    self.session.addInput(self.input!)
+                if let videoDevice = devices.first(where: { $0.position == preferredPosition}) {
+                    var videoInput: AVCaptureDeviceInput
+                    
+                    do {
+                        videoInput = try AVCaptureDeviceInput(device: videoDevice)
+                    } catch {
+                        print("Could not create video device input: \(error)")
+                        return
+                    }
+                    
+                    self.session.beginConfiguration()
+                    self.session.removeInput(self.input!)
+                    
+                    if self.session.canAddInput(videoInput) {
+                        self.session.addInput(videoInput)
+                        self.input = videoInput
+                    } else {
+                        print("Could not add video device input to the session")
+                        self.session.addInput(self.input!)
+                    }
+                    
+//                    if preferredPosition == .front {
+//                        let videoConnection = self.videoOutput.connection(with: .video)
+//                        videoConnection?.videoOrientation = .landscapeRight
+//                        videoConnection?.isVideoMirrored = true
+//                    }
+                    
                 }
                 
             }
