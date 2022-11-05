@@ -182,4 +182,47 @@ class CameraManager: ObservableObject {
             }
         }
     }
+    
+    /// changeCameraOption Method는 Camera Unavailable 발생
+    /// switchCamera Method는 문제 없음..
+    
+    func changeCameraOption() {
+        sessionQueue.async {
+            self.session.beginConfiguration()
+            
+            defer {
+                self.session.commitConfiguration()
+            }
+            
+            self.device = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back)
+            
+            guard let camera = self.device else {
+                self.set(error: .cameraUnavailable)
+                self.status = .failed
+                return
+            }
+            
+            do {
+                self.input = try AVCaptureDeviceInput(device: camera)
+                
+                if self.session.canAddInput(self.input!) {
+                    self.session.addInput(self.input!)
+                } else {
+                    self.set(error: .cannotAddInput)
+                    self.status = .failed
+                    return
+                }
+            } catch {
+                self.set(error: .createCaptureInput(error))
+                self.status = .failed
+                return
+            }
+            
+            self.session.sessionPreset = .hd4K3840x2160
+            self.status = .configured
+              
+        }
+    }
+    
+    
 }

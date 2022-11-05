@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+//let shared = CameraManager.shared
+
 struct DiveMainView: View {
     
     @StateObject private var model = DiveMainViewModel()
