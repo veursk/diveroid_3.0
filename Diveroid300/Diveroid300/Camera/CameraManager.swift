@@ -380,6 +380,32 @@ class CameraManager: ObservableObject {
     }
     
     
+    // Focus 함수, 1. smoothAutoFocus 확인필요 2. subjectAreaChangeMonitoringEnalbe 확인필요 3.CGPoint 작동 확인.
+    func focus() {
+        guard let videoDevice = self.input?.device else {return}
+
+        do {
+            try videoDevice.lockForConfiguration()
+            if videoDevice.isFocusPointOfInterestSupported && videoDevice.isFocusModeSupported(.continuousAutoFocus) {
+                videoDevice.focusPointOfInterest = CGPoint(x: 0.5, y: 0.5)
+                videoDevice.focusMode = .continuousAutoFocus
+            }
+            /* smoothAutoFocus*/
+//            if videoDevice.isSmoothAutoFocusSupported {
+//                videoDevice.isSmoothAutoFocusSupported = true
+//            }
+            
+            /* 일단 주석 처리 함*/
+//            videoDevice.isSubjectAreaChangeMonitoringEnabled = true
+
+            videoDevice.unlockForConfiguration()
+
+        } catch {
+            print("error on setting focus")
+        }
+    }
+    
+    
     
 //    func changeCameraOption() {
 //        sessionQueue.async {

@@ -110,6 +110,7 @@ struct bottomButtonView: View {
             .opacity(0.2)
             .frame(width: 94.0, height: 94.0)
           Button(action: {
+              CameraManager.shared.focus()
           },
                  label: {
             Circle()
