@@ -405,6 +405,15 @@ class CameraManager: ObservableObject {
         }
     }
     
+    // 절전모드 함수, 1. 잔여 프레임이 남는 지 확인 필요 2. 필터 적용 시 확인 필요
+    func ecoMode() {
+        if session.isRunning{
+            session.stopRunning()
+        } else {
+            session.startRunning()
+        }
+    }
+    
     
     
 //    func changeCameraOption() {

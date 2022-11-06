@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import SystemConfiguration
 
-//let shared = CameraManager.shared
+
+
 
 struct DiveMainView: View {
     
@@ -19,6 +21,8 @@ struct DiveMainView: View {
     @State var isZoomAngleSelected: Bool = false
     @State var isSelfieAngleSelected: Bool = false
 
+    
+    
 
     var body: some View {
         ZStack {

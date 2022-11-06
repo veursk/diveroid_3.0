@@ -41,35 +41,41 @@ struct topButtonView: View {
             .fill(Color.gray)
             .opacity(0.2)
             .frame(width: 94.0, height: 94.0)
-          Button(action: {
-              if !showOptionsCells {
-                  showOptionsCells.toggle()
-              }
-              else {
-                  if isWideAngleSelected {
-                      isNormalAngleSelected.toggle()
-                      isWideAngleSelected.toggle()
-                      CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.NormalCameraOption)
-                  } else if isNormalAngleSelected {
-                      isZoomAngleSelected.toggle()
-                      isNormalAngleSelected.toggle()
-                      CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.ZoomCameraOption)
-                  } else if isZoomAngleSelected {
-                      isSelfieAngleSelected.toggle()
-                      isZoomAngleSelected.toggle()
-                      CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.SelfieCameraOption)
-                  } else if isSelfieAngleSelected {
-                      isWideAngleSelected.toggle()
-                      isSelfieAngleSelected.toggle()
-                      CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.WideCameraOption)
-                  }
-              }
-          },
-                 label: {
+            Button(action: {
+                
+            },
+                label: {
             Circle()
               .fill(Color.white)
               .frame(width: 46.0, height: 46.0)
           })
+            .simultaneousGesture(LongPressGesture(minimumDuration: 1).onEnded({_ in
+                CameraManager.shared.ecoMode()
+            }))
+            .simultaneousGesture(TapGesture().onEnded({
+                if !showOptionsCells {
+                    showOptionsCells.toggle()
+                }
+                else {
+                    if isWideAngleSelected {
+                        isNormalAngleSelected.toggle()
+                        isWideAngleSelected.toggle()
+                        CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.NormalCameraOption)
+                    } else if isNormalAngleSelected {
+                        isZoomAngleSelected.toggle()
+                        isNormalAngleSelected.toggle()
+                        CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.ZoomCameraOption)
+                    } else if isZoomAngleSelected {
+                        isSelfieAngleSelected.toggle()
+                        isZoomAngleSelected.toggle()
+                        CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.SelfieCameraOption)
+                    } else if isSelfieAngleSelected {
+                        isWideAngleSelected.toggle()
+                        isSelfieAngleSelected.toggle()
+                        CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.WideCameraOption)
+                    }
+                }
+            }))
         }
       }
     }
@@ -131,3 +137,32 @@ struct ButtonsView_Previews: PreviewProvider {
                     isSelfieAngleSelected: .constant(false))
     }
 }
+
+
+/* 카메라 옵션 클로저
+
+ {
+     if !showOptionsCells {
+         showOptionsCells.toggle()
+     }
+     else {
+         if isWideAngleSelected {
+             isNormalAngleSelected.toggle()
+             isWideAngleSelected.toggle()
+             CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.NormalCameraOption)
+         } else if isNormalAngleSelected {
+             isZoomAngleSelected.toggle()
+             isNormalAngleSelected.toggle()
+             CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.ZoomCameraOption)
+         } else if isZoomAngleSelected {
+             isSelfieAngleSelected.toggle()
+             isZoomAngleSelected.toggle()
+             CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.SelfieCameraOption)
+         } else if isSelfieAngleSelected {
+             isWideAngleSelected.toggle()
+             isSelfieAngleSelected.toggle()
+             CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.WideCameraOption)
+         }
+     }
+ }
+ */
