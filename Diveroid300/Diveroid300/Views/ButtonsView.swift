@@ -14,10 +14,11 @@ struct ButtonsView: View {
     @Binding var isNormalAngleSelected: Bool
     @Binding var isZoomAngleSelected: Bool
     @Binding var isSelfieAngleSelected: Bool
+    @Binding var isEcoModeOn: Bool
 
     var body: some View {
         VStack(spacing: 30){
-            topButtonView(showOptionsCells: $showOptionsCells, isWideAngleSelected: $isWideAngleSelected, isNormalAngleSelected: $isNormalAngleSelected, isZoomAngleSelected: $isZoomAngleSelected, isSelfieAngleSelected: $isSelfieAngleSelected)
+            topButtonView(showOptionsCells: $showOptionsCells, isWideAngleSelected: $isWideAngleSelected, isNormalAngleSelected: $isNormalAngleSelected, isZoomAngleSelected: $isZoomAngleSelected, isSelfieAngleSelected: $isSelfieAngleSelected, isEcoModeOn: $isEcoModeOn)
                 .position(CGPoint(x: 730, y: 100))
             middleButtonView(showOptionsCells: $showOptionsCells)
                 .position(CGPoint(x: 780, y: 70))
@@ -34,6 +35,8 @@ struct topButtonView: View {
     @Binding var isNormalAngleSelected: Bool
     @Binding var isZoomAngleSelected: Bool
     @Binding var isSelfieAngleSelected: Bool
+    @Binding var isEcoModeOn: Bool
+
     
     var body: some View {
         ZStack{
@@ -51,6 +54,8 @@ struct topButtonView: View {
           })
             .simultaneousGesture(LongPressGesture(minimumDuration: 1).onEnded({_ in
                 CameraManager.shared.ecoMode()
+                isEcoModeOn.toggle()
+
             }))
             .simultaneousGesture(TapGesture().onEnded({
                 if !showOptionsCells {
@@ -86,27 +91,30 @@ struct middleButtonView: View {
     
     var body: some View {
         ZStack{
-          Circle()
-            .fill(Color.gray)
-            .opacity(0.2)
-            .frame(width: 94.0, height: 94.0)
-          Button(action: {
-              if showOptionsCells {
-                  showOptionsCells.toggle()
-              } else {
-                  FrameManager.shared.isSavingFrame = true
-              }
-              
-              
-          },
-                 label: {
             Circle()
-              .fill(Color.white)
-              .frame(width: 46.0, height: 46.0)
-          })
+                .fill(Color.gray)
+                .opacity(0.2)
+                .frame(width: 94.0, height: 94.0)
+            Button(action: {
+            },
+                   label: {
+                Circle()
+                    .fill(Color.white)
+                    .frame(width: 46.0, height: 46.0)
+            })
+            .simultaneousGesture(LongPressGesture(minimumDuration: 1)
+                .onEnded({ _ in
+                    if !CameraManager.shared.isRecording {
+                        CameraManager.shared.isRecording = true
+                        CameraManager.shared.setRecording()
+                    } else {
+                        CameraManager.shared.stopRecording()
+                        CameraManager.shared.isRecording = false
+                    }
+                }))
         }
-      }
     }
+}
 
 struct bottomButtonView: View {
     var body: some View {
@@ -134,7 +142,8 @@ struct ButtonsView_Previews: PreviewProvider {
                     isWideAngleSelected: .constant(true),
                     isNormalAngleSelected: .constant(false),
                     isZoomAngleSelected: .constant(false),
-                    isSelfieAngleSelected: .constant(false))
+                    isSelfieAngleSelected: .constant(false),
+                    isEcoModeOn: .constant(false))
     }
 }
 
@@ -164,5 +173,17 @@ struct ButtonsView_Previews: PreviewProvider {
              CameraManager.shared.changCameraOptionModified(CameraOptionName: Constants.CameraOptionName.WideCameraOption)
          }
      }
+ }
+ 
+ 프레임 촬영 클로저
+ 
+ {
+     if showOptionsCells {
+         showOptionsCells.toggle()
+     } else {
+         FrameManager.shared.isSavingFrame = true
+     }
+     
+     
  }
  */

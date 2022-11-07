@@ -9,6 +9,8 @@ import SwiftUI
 
 struct FrameView: View {
     
+    @Binding var isEcoModeOn: Bool
+
     var image: CGImage?
     private let label = Text("Camera Feed")
     
@@ -29,11 +31,14 @@ struct FrameView: View {
         } else {
             Color.black
         }
+        if isEcoModeOn {
+            Color.black
+        }
     }
 }
 
 struct FrameView_Previews: PreviewProvider {
     static var previews: some View {
-        FrameView()
+        FrameView(isEcoModeOn: .constant(true))
     }
 }

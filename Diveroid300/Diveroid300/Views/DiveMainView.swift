@@ -6,10 +6,6 @@
 //
 
 import SwiftUI
-import SystemConfiguration
-
-
-
 
 struct DiveMainView: View {
     
@@ -20,13 +16,13 @@ struct DiveMainView: View {
     @State var isNormalAngleSelected: Bool = false
     @State var isZoomAngleSelected: Bool = false
     @State var isSelfieAngleSelected: Bool = false
-
+    @State var isEcoModeOn: Bool = false
     
     
 
     var body: some View {
         ZStack {
-            FrameView(image: model.frame)
+            FrameView(isEcoModeOn: $isEcoModeOn, image: model.frame)
                 .edgesIgnoringSafeArea(.all)
             if showOptionCells {
                 TopButtonInteractionView(
@@ -41,7 +37,8 @@ struct DiveMainView: View {
                             isWideAngleSelected: $isWideAngleSelected,
                             isNormalAngleSelected: $isNormalAngleSelected,
                             isZoomAngleSelected: $isZoomAngleSelected,
-                            isSelfieAngleSelected: $isSelfieAngleSelected)
+                            isSelfieAngleSelected: $isSelfieAngleSelected,
+                isEcoModeOn: $isEcoModeOn)
             }
             ErrorView(error: model.error)
         }

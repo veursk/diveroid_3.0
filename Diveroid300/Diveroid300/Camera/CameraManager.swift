@@ -6,8 +6,9 @@
 //
 
 import AVFoundation
+import Photos
 
-class CameraManager: ObservableObject {
+class CameraManager: NSObject, ObservableObject {
     
     enum Status {
         case unconfigured
@@ -17,14 +18,21 @@ class CameraManager: ObservableObject {
     }
     
     @Published var error: CameraError?
+    @Published var isRecording: Bool = false
+    @Published var recordedURLs: [URL] = []
     /// 공부 필요
     ///
     private let sessionQueue = DispatchQueue(label: "cameraSessionQ")
     let session = AVCaptureSession()
     let videoOutput = AVCaptureVideoDataOutput()
+    let movieOutput = AVCaptureMovieFileOutput()
+    
     
     var device: AVCaptureDevice?
     var input: AVCaptureDeviceInput?
+    var audioDevice: AVCaptureDevice?
+    var audioInput: AVCaptureDeviceInput?
+    
     private var status = Status.unconfigured
     static let shared = CameraManager()
     
@@ -36,7 +44,8 @@ class CameraManager: ObservableObject {
                                                                                
                                                                                position: .unspecified)
     /// Singleton으로 구현
-    private init() {
+    private override init() {
+        super.init()
         configure()
     }
     
@@ -136,6 +145,61 @@ class CameraManager: ObservableObject {
             self.videoOutput.setSampleBufferDelegate(delegate, queue: queue)
         }
     }
+    
+    func setRecording() {
+        sessionQueue.async {
+            print("setRecording 시작1")
+            self.session.beginConfiguration()
+            guard let audioDevice = AVCaptureDevice.default(for: .audio) else {return}
+            
+            do {
+                
+                try self.audioInput = AVCaptureDeviceInput(device: audioDevice)
+                
+                if self.session.canAddInput(self.audioInput!) {
+                    self.session.addInput(self.audioInput!)
+                    self.audioDevice = audioDevice
+                }
+                
+                self.session.removeOutput(self.videoOutput)
+                
+                if self.session.canAddOutput(self.movieOutput) {
+                    self.session.addOutput(self.movieOutput)
+                }
+                
+                self.session.commitConfiguration()
+                
+            } catch {
+                print(error.localizedDescription)
+            }
+            
+            
+            print("setRecording 시작2")
+            
+            self.startRecording()
+
+        }
+    }
+    
+    func startRecording() {
+        // TEMPORARY URL FOR RECORDING VIDEO
+        print("startRecording 시작1")
+        let tempURL = NSTemporaryDirectory() + "\(Date()).mov"
+        print("startRecording 시작2")
+        self.movieOutput.startRecording(to: URL(fileURLWithPath: tempURL), recordingDelegate: self)
+        print("startRecording 시작3")
+        isRecording = true
+        print("startRecording 시작4")
+    }
+    
+    func stopRecording() {
+        print("stopRecording 시작1")
+        self.movieOutput.stopRecording()
+        print("stopRecording 시작2")
+        isRecording = false
+        print("stopRecording 시작3")
+    }
+
     
     func switchCamera() {
         sessionQueue.async {
@@ -405,12 +469,15 @@ class CameraManager: ObservableObject {
         }
     }
     
-    // 절전모드 함수, 1. 잔여 프레임이 남는 지 확인 필요 2. 필터 적용 시 확인 필요
+    // 절전모드 함수, 1. 잔여 프레임이 남는 지 확인 필요 2. 필터 적용 시 확인 필요 3.SessionQueue 이용(Background Thread)
     func ecoMode() {
-        if session.isRunning{
-            session.stopRunning()
-        } else {
-            session.startRunning()
+        sessionQueue.async {
+            
+            if self.session.isRunning{
+                self.session.stopRunning()
+            } else {
+                self.session.startRunning()
+            }
         }
     }
     
@@ -455,4 +522,114 @@ class CameraManager: ObservableObject {
 //    }
     
     
+}
+
+extension CameraManager: AVCaptureFileOutputRecordingDelegate {
+    
+    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        print("didFinishRecording 시작1")
+        // CREATED SUCCESFULLY
+        print(outputFileURL)
+        self.recordedURLs.append(outputFileURL)
+        print("didFinishRecording 시작2")
+
+        // CONVERTING URLs TO ASSETS
+        print("didFinishRecording 시작3")
+
+        let assets = recordedURLs.compactMap { url -> AVURLAsset in
+            return AVURLAsset(url: url)
+        }
+        print("didFinishRecording 시작4")
+
+        
+        // MERGING VIDEOS
+        print("didFinishRecording 시작5")
+
+        mergeVideos(assets: assets) { exporter in
+            exporter.exportAsynchronously {
+                if exporter.status == .failed {
+                    // HANDLE ERROR
+                    print(exporter.error!)
+                } else {
+                    if let finalURL = exporter.outputURL{
+                        print(finalURL)
+                        PHPhotoLibrary.requestAuthorization { status in
+                            if status == .authorized {
+                                PHPhotoLibrary.shared().performChanges {
+                                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: finalURL)
+                                } completionHandler: { errSecSuccess, eroor in
+                                    print("아직 개발 안함")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        print("didFinishRecording 시작6")
+        
+//        PHPhotoLibrary.requestAuthorization { status in
+//            if status == .authorized {
+//                PHPhotoLibrary.shared().performChanges {
+//                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: finalUR)
+//                    PHAssetChangeRequest.creationRequestForAsset(from: finalImage)
+//                } completionHandler: { errSecSuccess, eroor in
+//                    print("아직 개발 안함")
+//                }
+//            }
+//        }
+
+    }
+    
+    func mergeVideos(assets: [AVURLAsset], completion: @escaping (_ exporter: AVAssetExportSession) -> ()) {
+        print("mergeVideos 시작1")
+
+        let composition = AVMutableComposition()
+        var lastTime: CMTime = .zero
+        print("mergeVideos 시작2")
+
+        guard let videoTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)) else {return}
+        guard let audioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)) else {return}
+        print("mergeVideos 시작3")
+
+        for asset in assets {
+            print("mergeVideos 시작4")
+
+            // LINKING AUDIO AND VIDEO
+            do {
+                try videoTrack.insertTimeRange(CMTimeRange(start: .zero, duration: asset.duration), of: asset.tracks(withMediaType: .video)[0], at: lastTime)
+                // SAFE CHECK IF VIDEO HAS AUDIO
+                if !asset.tracks(withMediaType: .audio).isEmpty {
+                    try audioTrack.insertTimeRange(CMTimeRange(start: .zero, duration: asset.duration), of: asset.tracks(withMediaType: .audio)[0], at: lastTime)
+                }
+                
+            } catch {
+                // HANDLE ERROR
+                print(error.localizedDescription)
+            }
+            
+            // UPDATING LAST TIME
+            lastTime = CMTimeAdd(lastTime, asset.duration)
+        }
+        print("mergeVideos 시작5")
+
+        
+        // TEMP OUTPUT URL
+        let tempURL = URL(fileURLWithPath: NSTemporaryDirectory() + "Diveroid-\(Date()).mp4")
+        print("mergeVideos 시작6")
+
+        guard let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {return}
+        exporter.outputFileType = .mp4
+        exporter.outputURL = tempURL
+        completion(exporter)
+        print("mergeVideos 시작7")
+
+        
+    }
 }
