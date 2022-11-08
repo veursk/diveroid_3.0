@@ -147,6 +147,8 @@ class CameraManager: NSObject, ObservableObject {
         }
     }
     
+    
+    /* SetRecording 함수는 SessionQueue에서 뺐음. StateObject 쓰려고 한 이유. + 굳이 세션큐에 안 넣어도 상관 없음? */
     func setRecording() {
         
             print("setRecording 시작1")
@@ -196,6 +198,7 @@ class CameraManager: NSObject, ObservableObject {
 
     }
     
+    /* stopRecording 함수도 SessionQueue에 집어넣어야 하는 지 체크 필요.*/
     func stopRecording() {
         print("stopRecording 시작1")
 
