@@ -10,8 +10,9 @@ import SwiftUI
 struct DiveMainView: View {
     
     @StateObject private var model = DiveMainViewModel()
-    @State var showOptionCells = false
+    @StateObject private var manager = CameraManager.shared
     
+    @State var showOptionCells = false
     @State var isWideAngleSelected: Bool = true
     @State var isNormalAngleSelected: Bool = false
     @State var isZoomAngleSelected: Bool = false
@@ -22,8 +23,16 @@ struct DiveMainView: View {
 
     var body: some View {
         ZStack {
-            FrameView(isEcoModeOn: $isEcoModeOn, image: model.frame)
-                .edgesIgnoringSafeArea(.all)
+            if manager.isRecording {
+                ZStack{
+                    PreviewController()
+                    Circle()
+                        .foregroundColor(.blue)
+                }
+            } else {
+                FrameView(isEcoModeOn: $isEcoModeOn, image: model.frame)
+                    .edgesIgnoringSafeArea(.all)
+            }
             if showOptionCells {
                 TopButtonInteractionView(
                     isWideAngleSelected: $isWideAngleSelected,
@@ -44,6 +53,7 @@ struct DiveMainView: View {
         }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

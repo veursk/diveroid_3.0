@@ -105,11 +105,10 @@ struct middleButtonView: View {
             .simultaneousGesture(LongPressGesture(minimumDuration: 1)
                 .onEnded({ _ in
                     if !CameraManager.shared.isRecording {
-                        CameraManager.shared.isRecording = true
                         CameraManager.shared.setRecording()
+                        CameraManager.shared.startRecording()
                     } else {
                         CameraManager.shared.stopRecording()
-                        CameraManager.shared.isRecording = false
                     }
                 }))
         }

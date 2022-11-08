@@ -17,6 +17,7 @@ class CameraManager: NSObject, ObservableObject {
         case failed
     }
     
+    
     @Published var error: CameraError?
     @Published var isRecording: Bool = false
     @Published var recordedURLs: [URL] = []
@@ -26,7 +27,7 @@ class CameraManager: NSObject, ObservableObject {
     let session = AVCaptureSession()
     let videoOutput = AVCaptureVideoDataOutput()
     let movieOutput = AVCaptureMovieFileOutput()
-    
+    var previewLayer = AVCaptureVideoPreviewLayer()
     
     var device: AVCaptureDevice?
     var input: AVCaptureDeviceInput?
@@ -147,13 +148,15 @@ class CameraManager: NSObject, ObservableObject {
     }
     
     func setRecording() {
-        sessionQueue.async {
+        
             print("setRecording 시작1")
             self.session.beginConfiguration()
             guard let audioDevice = AVCaptureDevice.default(for: .audio) else {return}
-            
+            print("setRecording 시작2")
+
             do {
-                
+                print("setRecording 시작3")
+
                 try self.audioInput = AVCaptureDeviceInput(device: audioDevice)
                 
                 if self.session.canAddInput(self.audioInput!) {
@@ -170,36 +173,52 @@ class CameraManager: NSObject, ObservableObject {
                 self.session.commitConfiguration()
                 
             } catch {
+                print("setRecording 시작4")
+
                 print(error.localizedDescription)
             }
-            
-            
-            print("setRecording 시작2")
-            
-            self.startRecording()
 
-        }
+            self.isRecording = true
+
     }
     
     func startRecording() {
-        // TEMPORARY URL FOR RECORDING VIDEO
-        print("startRecording 시작1")
-        let tempURL = NSTemporaryDirectory() + "\(Date()).mov"
-        print("startRecording 시작2")
-        self.movieOutput.startRecording(to: URL(fileURLWithPath: tempURL), recordingDelegate: self)
-        print("startRecording 시작3")
-        isRecording = true
-        print("startRecording 시작4")
+        /// SessinQueue에 안 집어넣으면 에러발생.
+        sessionQueue.async {
+            print("startRecording 시작1")
+
+            // TEMPORARY URL FOR RECORDING VIDEO
+            let tempURL = NSTemporaryDirectory() + "\(Date()).mov"
+            self.movieOutput.startRecording(to: URL(fileURLWithPath: tempURL), recordingDelegate: self)
+            print("startRecording 시작2")
+        }
+        
+
     }
     
     func stopRecording() {
         print("stopRecording 시작1")
+
         self.movieOutput.stopRecording()
         print("stopRecording 시작2")
-        isRecording = false
-        print("stopRecording 시작3")
-    }
 
+        print("stopRecording 시작3")
+
+        print("stopRecording 시작4")
+
+        /// 여기다가 넣으면 error 발생
+//        self.session.removeOutput(self.movieOutput)
+//
+//        if self.session.canAddOutput(self.videoOutput) {
+//            print("stopRecording 시작6")
+//
+//            self.session.addOutput(self.videoOutput)
+//            print("stopRecording 시작7")
+//
+//            }
+        
+    }
+    
     
     func switchCamera() {
         sessionQueue.async {
@@ -482,7 +501,6 @@ class CameraManager: NSObject, ObservableObject {
     }
     
     
-    
 //    func changeCameraOption() {
 //        sessionQueue.async {
 //            self.session.beginConfiguration()
@@ -527,33 +545,44 @@ class CameraManager: NSObject, ObservableObject {
 extension CameraManager: AVCaptureFileOutputRecordingDelegate {
     
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+        
+        // 왜 여기다가 넣으면 될까..?
+        self.session.removeOutput(self.movieOutput)
+        
+        if self.session.canAddOutput(self.videoOutput) {
+            print("stopRecording 시작6")
+
+            self.session.addOutput(self.videoOutput)
+            print("stopRecording 시작7")
+            self.isRecording = false
+            }
+        //
+        
         if let error = error {
+            print("에러인가")
+
             print(error.localizedDescription)
             return
         }
-        print("didFinishRecording 시작1")
+        print("무비파일아웃")
+
         // CREATED SUCCESFULLY
         print(outputFileURL)
         self.recordedURLs.append(outputFileURL)
-        print("didFinishRecording 시작2")
 
         // CONVERTING URLs TO ASSETS
-        print("didFinishRecording 시작3")
-
         let assets = recordedURLs.compactMap { url -> AVURLAsset in
             return AVURLAsset(url: url)
         }
-        print("didFinishRecording 시작4")
 
-        
         // MERGING VIDEOS
-        print("didFinishRecording 시작5")
-
         mergeVideos(assets: assets) { exporter in
             exporter.exportAsynchronously {
                 if exporter.status == .failed {
                     // HANDLE ERROR
+                    print("에러3")
                     print(exporter.error!)
+                    print("에러4")
                 } else {
                     if let finalURL = exporter.outputURL{
                         print(finalURL)
@@ -571,9 +600,6 @@ extension CameraManager: AVCaptureFileOutputRecordingDelegate {
             }
         }
         
-        
-        print("didFinishRecording 시작6")
-        
 //        PHPhotoLibrary.requestAuthorization { status in
 //            if status == .authorized {
 //                PHPhotoLibrary.shared().performChanges {
@@ -588,19 +614,14 @@ extension CameraManager: AVCaptureFileOutputRecordingDelegate {
     }
     
     func mergeVideos(assets: [AVURLAsset], completion: @escaping (_ exporter: AVAssetExportSession) -> ()) {
-        print("mergeVideos 시작1")
 
         let composition = AVMutableComposition()
         var lastTime: CMTime = .zero
-        print("mergeVideos 시작2")
 
         guard let videoTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)) else {return}
         guard let audioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)) else {return}
-        print("mergeVideos 시작3")
 
         for asset in assets {
-            print("mergeVideos 시작4")
-
             // LINKING AUDIO AND VIDEO
             do {
                 try videoTrack.insertTimeRange(CMTimeRange(start: .zero, duration: asset.duration), of: asset.tracks(withMediaType: .video)[0], at: lastTime)
@@ -611,25 +632,23 @@ extension CameraManager: AVCaptureFileOutputRecordingDelegate {
                 
             } catch {
                 // HANDLE ERROR
+                print("에러1")
                 print(error.localizedDescription)
+                print("에러2")
+
             }
             
             // UPDATING LAST TIME
             lastTime = CMTimeAdd(lastTime, asset.duration)
         }
-        print("mergeVideos 시작5")
 
-        
         // TEMP OUTPUT URL
         let tempURL = URL(fileURLWithPath: NSTemporaryDirectory() + "Diveroid-\(Date()).mp4")
-        print("mergeVideos 시작6")
 
         guard let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {return}
         exporter.outputFileType = .mp4
         exporter.outputURL = tempURL
         completion(exporter)
-        print("mergeVideos 시작7")
 
-        
     }
 }

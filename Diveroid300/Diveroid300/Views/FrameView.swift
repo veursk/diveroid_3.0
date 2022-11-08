@@ -15,21 +15,26 @@ struct FrameView: View {
     private let label = Text("Camera Feed")
     
     var body: some View {
-        if let image = image {
-            GeometryReader { geometry in
-                Image(image,
-                      scale: 1.0,
-                      orientation: .up,
-                label: label)
-                .resizable()
-                .scaledToFill()
-                .frame(width: geometry.size.width,
-                       height: geometry.size.height,
-                       alignment: .center)
-                .clipped()
+        ZStack{
+            if let image = image {
+                GeometryReader { geometry in
+                    Image(image,
+                          scale: 1.0,
+                          orientation: .up,
+                          label: label)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: geometry.size.width,
+                           height: geometry.size.height,
+                           alignment: .center)
+                    .clipped()
+                }
+                Circle()
+                    .foregroundColor(.red)
+
+            } else {
+                Color.black
             }
-        } else {
-            Color.black
         }
         if isEcoModeOn {
             Color.black

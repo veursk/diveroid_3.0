@@ -25,6 +25,7 @@
 		4364D8AA2913B8DA00FD6219 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8A92913B8DA00FD6219 /* ErrorView.swift */; };
 		4364D8AC2913DAE700FD6219 /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8AB2913DAE700FD6219 /* ButtonsView.swift */; };
 		4364D8AF2914901500FD6219 /* TopButtonInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8AE2914901500FD6219 /* TopButtonInteractionView.swift */; };
+		4364D8BC2919257F00FD6219 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8BB2919257F00FD6219 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		4364D8A92913B8DA00FD6219 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		4364D8AB2913DAE700FD6219 /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
 		4364D8AE2914901500FD6219 /* TopButtonInteractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopButtonInteractionView.swift; sourceTree = "<group>"; };
+		4364D8BB2919257F00FD6219 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 			children = (
 				4364D86A2913963500FD6219 /* DiveMainView.swift */,
 				4364D8AB2913DAE700FD6219 /* ButtonsView.swift */,
+				4364D8BB2919257F00FD6219 /* ViewController.swift */,
 				4364D8A22913B58200FD6219 /* FrameView.swift */,
 				4364D8A92913B8DA00FD6219 /* ErrorView.swift */,
 				4364D8AE2914901500FD6219 /* TopButtonInteractionView.swift */,
@@ -330,6 +333,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4364D8BC2919257F00FD6219 /* ViewController.swift in Sources */,
 				4364D8A32913B58200FD6219 /* FrameView.swift in Sources */,
 				4364D8A82913B7DF00FD6219 /* CGImageExtension.swift in Sources */,
 				4364D89529139A3200FD6219 /* ComputerArea.swift in Sources */,
