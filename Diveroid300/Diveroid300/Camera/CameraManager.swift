@@ -19,7 +19,6 @@ class CameraManager: NSObject, ObservableObject {
     
     
     @Published var error: CameraError?
-    @Published var isRecording: Bool = false
     @Published var recordedURLs: [URL] = []
     /// 공부 필요
     ///
@@ -36,6 +35,11 @@ class CameraManager: NSObject, ObservableObject {
     
     private var status = Status.unconfigured
     static let shared = CameraManager()
+    var isRecording: Bool = false
+    @Published var isRecordingProcessFinished: Bool = false
+    
+    let recordingQueue = DispatchQueue(label: "recordingQueue", attributes: [], autoreleaseFrequency: .workItem)
+
     
     // discoverySession도 다시 체크 필요함(기기별)
     private let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera,
@@ -149,16 +153,19 @@ class CameraManager: NSObject, ObservableObject {
     
     
     /* SetRecording 함수는 SessionQueue에서 뺐음. StateObject 쓰려고 한 이유. + 굳이 세션큐에 안 넣어도 상관 없음? */
+    /* SessionQueue에 넣어야 View 렌더링 시 문제 안 생김*/
     func setRecording() {
         
+        sessionQueue.async {
+            
             print("setRecording 시작1")
             self.session.beginConfiguration()
             guard let audioDevice = AVCaptureDevice.default(for: .audio) else {return}
             print("setRecording 시작2")
-
+            
             do {
                 print("setRecording 시작3")
-
+                
                 try self.audioInput = AVCaptureDeviceInput(device: audioDevice)
                 
                 if self.session.canAddInput(self.audioInput!) {
@@ -176,12 +183,12 @@ class CameraManager: NSObject, ObservableObject {
                 
             } catch {
                 print("setRecording 시작4")
-
+                
                 print(error.localizedDescription)
             }
-
+            
             self.isRecording = true
-
+        }
     }
     
     func startRecording() {
@@ -200,14 +207,18 @@ class CameraManager: NSObject, ObservableObject {
     
     /* stopRecording 함수도 SessionQueue에 집어넣어야 하는 지 체크 필요.*/
     func stopRecording() {
+            
         print("stopRecording 시작1")
-
-        self.movieOutput.stopRecording()
-        print("stopRecording 시작2")
-
-        print("stopRecording 시작3")
-
-        print("stopRecording 시작4")
+        sessionQueue.sync {
+            
+            if self.movieOutput.isRecording{
+                    print("self.movieOutput is Recording")
+                    self.movieOutput.stopRecording()
+            }
+            print("stopRecording 시작2")
+            
+        }
+        
 
         /// 여기다가 넣으면 error 발생
 //        self.session.removeOutput(self.movieOutput)
@@ -550,108 +561,234 @@ extension CameraManager: AVCaptureFileOutputRecordingDelegate {
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
         
         // 왜 여기다가 넣으면 될까..?
-        self.session.removeOutput(self.movieOutput)
-        
-        if self.session.canAddOutput(self.videoOutput) {
-            print("stopRecording 시작6")
-
-            self.session.addOutput(self.videoOutput)
-            print("stopRecording 시작7")
-            self.isRecording = false
-            }
+        //                self.session.removeOutput(self.movieOutput)
+        //
+        //                if self.session.canAddOutput(self.videoOutput) {
+        //                    print("stopRecording 시작6")
+        //
+        //                    self.session.addOutput(self.videoOutput)
+        //                    print("stopRecording 시작7")
+        //                    self.isRecording = false
+        //                }
         //
         
+        
         if let error = error {
-            print("에러인가")
-
+            print("에러인가1")
+            
             print(error.localizedDescription)
             return
-        }
-        print("무비파일아웃")
-
-        // CREATED SUCCESFULLY
-        print(outputFileURL)
-        self.recordedURLs.append(outputFileURL)
-
-        // CONVERTING URLs TO ASSETS
-        let assets = recordedURLs.compactMap { url -> AVURLAsset in
-            return AVURLAsset(url: url)
-        }
-
-        // MERGING VIDEOS
-        mergeVideos(assets: assets) { exporter in
-            exporter.exportAsynchronously {
-                if exporter.status == .failed {
-                    // HANDLE ERROR
-                    print("에러3")
-                    print(exporter.error!)
-                    print("에러4")
-                } else {
-                    if let finalURL = exporter.outputURL{
-                        print(finalURL)
-                        PHPhotoLibrary.requestAuthorization { status in
-                            if status == .authorized {
-                                PHPhotoLibrary.shared().performChanges {
-                                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: finalURL)
-                                } completionHandler: { errSecSuccess, eroor in
-                                    print("아직 개발 안함")
-                                }
+        } else{
+            print("무비파일아웃")
+            
+            PHPhotoLibrary.requestAuthorization { PHAuthorizationStatus in
+                if PHAuthorizationStatus == .authorized {
+                    PHPhotoLibrary.shared().performChanges {
+                        PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: outputFileURL)
+                    } completionHandler: { success, error in
+                        if success {
+                            print("COMPLETION HANDLER : SUCCESS")
+                            self.isRecordingProcessFinished = true
+                            self.isRecording = false
+                            self.session.removeOutput(self.movieOutput)
+                            
+                            if self.session.canAddOutput(self.videoOutput) {
+                                print("stopRecording 시작6")
+                                
+                                self.session.addOutput(self.videoOutput)
+                                print("stopRecording 시작7")
+                            }
+                            else {
+                                print("COMPLETION HANDLER : ERROR")
+                                //                            self.session.removeOutput(self.movieOutput)
+                                //
+                                //                            if self.session.canAddOutput(self.videoOutput) {
+                                //                                print("stopRecording 시작6")
+                                //
+                                //                                self.session.addOutput(self.videoOutput)
+                                //                                print("stopRecording 시작7")
+                                //                                self.isRecording = false
                             }
                         }
                     }
                 }
-            }
-        }
-        
-//        PHPhotoLibrary.requestAuthorization { status in
-//            if status == .authorized {
-//                PHPhotoLibrary.shared().performChanges {
-//                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: finalUR)
-//                    PHAssetChangeRequest.creationRequestForAsset(from: finalImage)
-//                } completionHandler: { errSecSuccess, eroor in
-//                    print("아직 개발 안함")
-//                }
-//            }
-//        }
-
-    }
-    
-    func mergeVideos(assets: [AVURLAsset], completion: @escaping (_ exporter: AVAssetExportSession) -> ()) {
-
-        let composition = AVMutableComposition()
-        var lastTime: CMTime = .zero
-
-        guard let videoTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)) else {return}
-        guard let audioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)) else {return}
-
-        for asset in assets {
-            // LINKING AUDIO AND VIDEO
-            do {
-                try videoTrack.insertTimeRange(CMTimeRange(start: .zero, duration: asset.duration), of: asset.tracks(withMediaType: .video)[0], at: lastTime)
-                // SAFE CHECK IF VIDEO HAS AUDIO
-                if !asset.tracks(withMediaType: .audio).isEmpty {
-                    try audioTrack.insertTimeRange(CMTimeRange(start: .zero, duration: asset.duration), of: asset.tracks(withMediaType: .audio)[0], at: lastTime)
-                }
                 
-            } catch {
-                // HANDLE ERROR
-                print("에러1")
-                print(error.localizedDescription)
-                print("에러2")
-
+                
+                
+                
+                
+                
+                
+                
+                //        PHPhotoLibrary.requestAuthorization { status in
+                //            if status == .authorized {
+                //                PHPhotoLibrary.shared().performChanges {
+                //                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: finalUR)
+                //                    PHAssetChangeRequest.creationRequestForAsset(from: finalImage)
+                //                } completionHandler: { errSecSuccess, eroor in
+                //                    print("아직 개발 안함")
+                //                }
+                //            }
+                //        }
+                
             }
             
-            // UPDATING LAST TIME
-            lastTime = CMTimeAdd(lastTime, asset.duration)
+            func mergeVideos(assets: [AVURLAsset], completion: @escaping (_ exporter: AVAssetExportSession) -> ()) {
+                
+                let composition = AVMutableComposition()
+                var lastTime: CMTime = .zero
+                
+                guard let videoTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)) else {return}
+                guard let audioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)) else {return}
+                
+                for asset in assets {
+                    // LINKING AUDIO AND VIDEO
+                    do {
+                        try videoTrack.insertTimeRange(CMTimeRange(start: .zero, duration: asset.duration), of: asset.tracks(withMediaType: .video)[0], at: lastTime)
+                        // SAFE CHECK IF VIDEO HAS AUDIO
+                        if !asset.tracks(withMediaType: .audio).isEmpty {
+                            try audioTrack.insertTimeRange(CMTimeRange(start: .zero, duration: asset.duration), of: asset.tracks(withMediaType: .audio)[0], at: lastTime)
+                        }
+                        
+                    } catch {
+                        // HANDLE ERROR
+                        print("에러1")
+                        print(error.localizedDescription)
+                        print("에러2")
+                        
+                    }
+                    
+                    // UPDATING LAST TIME
+                    lastTime = CMTimeAdd(lastTime, asset.duration)
+                }
+                
+                // TEMP OUTPUT URL
+                let tempURL = URL(fileURLWithPath: NSTemporaryDirectory() + "Diveroid-\(Date()).mp4")
+                
+                guard let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {return}
+                exporter.outputFileType = .mp4
+                exporter.outputURL = tempURL
+                completion(exporter)
+                
+            }
+            
         }
-
-        // TEMP OUTPUT URL
-        let tempURL = URL(fileURLWithPath: NSTemporaryDirectory() + "Diveroid-\(Date()).mp4")
-
-        guard let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {return}
-        exporter.outputFileType = .mp4
-        exporter.outputURL = tempURL
-        completion(exporter)
-
     }
 }
+    
+
+
+/* 기존
+ extension CameraManager: AVCaptureFileOutputRecordingDelegate {
+     
+     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+         
+         // 왜 여기다가 넣으면 될까..?
+         self.session.removeOutput(self.movieOutput)
+         
+         if self.session.canAddOutput(self.videoOutput) {
+             print("stopRecording 시작6")
+             
+             self.session.addOutput(self.videoOutput)
+             print("stopRecording 시작7")
+             self.isRecording = false
+             //            }
+             //
+             
+             if let error = error {
+                 print("에러인가")
+                 
+                 print(error.localizedDescription)
+                 return
+             }
+             print("무비파일아웃")
+             
+             // CREATED SUCCESFULLY
+             print(outputFileURL)
+             self.recordedURLs.append(outputFileURL)
+             
+             // CONVERTING URLs TO ASSETS
+             let assets = recordedURLs.compactMap { url -> AVURLAsset in
+                 return AVURLAsset(url: url)
+             }
+             
+             // MERGING VIDEOS
+             mergeVideos(assets: assets) { exporter in
+                 exporter.exportAsynchronously {
+                     if exporter.status == .failed {
+                         // HANDLE ERROR
+                         print("에러3")
+                         print(exporter.error!)
+                         print("에러4")
+                     } else {
+                         if let finalURL = exporter.outputURL{
+                             print(finalURL)
+                             PHPhotoLibrary.requestAuthorization { status in
+                                 if status == .authorized {
+                                     PHPhotoLibrary.shared().performChanges {
+                                         PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: finalURL)
+                                     } completionHandler: { errSecSuccess, eroor in
+                                         print("컴플리션 핸들러")
+                                     }
+                                 }
+                             }
+                         }
+                     }
+                 }
+             }
+             
+             
+             //        PHPhotoLibrary.requestAuthorization { status in
+             //            if status == .authorized {
+             //                PHPhotoLibrary.shared().performChanges {
+             //                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: finalUR)
+             //                    PHAssetChangeRequest.creationRequestForAsset(from: finalImage)
+             //                } completionHandler: { errSecSuccess, eroor in
+             //                    print("아직 개발 안함")
+             //                }
+             //            }
+             //        }
+             
+         }
+         
+         func mergeVideos(assets: [AVURLAsset], completion: @escaping (_ exporter: AVAssetExportSession) -> ()) {
+             
+             let composition = AVMutableComposition()
+             var lastTime: CMTime = .zero
+             
+             guard let videoTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)) else {return}
+             guard let audioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: Int32(kCMPersistentTrackID_Invalid)) else {return}
+             
+             for asset in assets {
+                 // LINKING AUDIO AND VIDEO
+                 do {
+                     try videoTrack.insertTimeRange(CMTimeRange(start: .zero, duration: asset.duration), of: asset.tracks(withMediaType: .video)[0], at: lastTime)
+                     // SAFE CHECK IF VIDEO HAS AUDIO
+                     if !asset.tracks(withMediaType: .audio).isEmpty {
+                         try audioTrack.insertTimeRange(CMTimeRange(start: .zero, duration: asset.duration), of: asset.tracks(withMediaType: .audio)[0], at: lastTime)
+                     }
+                     
+                 } catch {
+                     // HANDLE ERROR
+                     print("에러1")
+                     print(error.localizedDescription)
+                     print("에러2")
+                     
+                 }
+                 
+                 // UPDATING LAST TIME
+                 lastTime = CMTimeAdd(lastTime, asset.duration)
+             }
+             
+             // TEMP OUTPUT URL
+             let tempURL = URL(fileURLWithPath: NSTemporaryDirectory() + "Diveroid-\(Date()).mp4")
+             
+             guard let exporter = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {return}
+             exporter.outputFileType = .mp4
+             exporter.outputURL = tempURL
+             completion(exporter)
+             
+         }
+     }
+ }
+ */

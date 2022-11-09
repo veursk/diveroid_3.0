@@ -14,7 +14,7 @@
 		4364D87A2913963900FD6219 /* Diveroid300Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8792913963900FD6219 /* Diveroid300Tests.swift */; };
 		4364D8842913963900FD6219 /* Diveroid300UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8832913963900FD6219 /* Diveroid300UITests.swift */; };
 		4364D8862913963900FD6219 /* Diveroid300UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8852913963900FD6219 /* Diveroid300UITestsLaunchTests.swift */; };
-		4364D89529139A3200FD6219 /* ComputerArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D89429139A3200FD6219 /* ComputerArea.swift */; };
+		4364D89529139A3200FD6219 /* DivingComputerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D89429139A3200FD6219 /* DivingComputerView.swift */; };
 		4364D89929139B7600FD6219 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D89829139B7600FD6219 /* Constants.swift */; };
 		4364D89D2913AC9E00FD6219 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D89C2913AC9E00FD6219 /* CameraManager.swift */; };
 		4364D89F2913ACEB00FD6219 /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D89E2913ACEB00FD6219 /* CameraError.swift */; };
@@ -26,6 +26,8 @@
 		4364D8AC2913DAE700FD6219 /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8AB2913DAE700FD6219 /* ButtonsView.swift */; };
 		4364D8AF2914901500FD6219 /* TopButtonInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8AE2914901500FD6219 /* TopButtonInteractionView.swift */; };
 		4364D8BC2919257F00FD6219 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8BB2919257F00FD6219 /* ViewController.swift */; };
+		4364D8BF291A253E00FD6219 /* AscendingGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8BE291A253E00FD6219 /* AscendingGraphView.swift */; };
+		4364D8C2291A3FF100FD6219 /* CheckingAirplaneModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8C1291A3FF100FD6219 /* CheckingAirplaneModeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +58,7 @@
 		4364D87F2913963900FD6219 /* Diveroid300UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Diveroid300UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4364D8832913963900FD6219 /* Diveroid300UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diveroid300UITests.swift; sourceTree = "<group>"; };
 		4364D8852913963900FD6219 /* Diveroid300UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diveroid300UITestsLaunchTests.swift; sourceTree = "<group>"; };
-		4364D89429139A3200FD6219 /* ComputerArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerArea.swift; sourceTree = "<group>"; };
+		4364D89429139A3200FD6219 /* DivingComputerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DivingComputerView.swift; sourceTree = "<group>"; };
 		4364D89829139B7600FD6219 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4364D89C2913AC9E00FD6219 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		4364D89E2913ACEB00FD6219 /* CameraError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraError.swift; sourceTree = "<group>"; };
@@ -68,6 +70,8 @@
 		4364D8AB2913DAE700FD6219 /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
 		4364D8AE2914901500FD6219 /* TopButtonInteractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopButtonInteractionView.swift; sourceTree = "<group>"; };
 		4364D8BB2919257F00FD6219 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		4364D8BE291A253E00FD6219 /* AscendingGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AscendingGraphView.swift; sourceTree = "<group>"; };
+		4364D8C1291A3FF100FD6219 /* CheckingAirplaneModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckingAirplaneModeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +167,8 @@
 				4364D8A22913B58200FD6219 /* FrameView.swift */,
 				4364D8A92913B8DA00FD6219 /* ErrorView.swift */,
 				4364D8AE2914901500FD6219 /* TopButtonInteractionView.swift */,
+				4364D8C0291A3FC900FD6219 /* AirplaneModeViews */,
+				4364D8BD291A247C00FD6219 /* DivingComputerViews */,
 				4364D89329139A1F00FD6219 /* General */,
 			);
 			path = Views;
@@ -171,7 +177,6 @@
 		4364D89329139A1F00FD6219 /* General */ = {
 			isa = PBXGroup;
 			children = (
-				4364D89429139A3200FD6219 /* ComputerArea.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -201,6 +206,23 @@
 				4364D8A72913B7DF00FD6219 /* CGImageExtension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		4364D8BD291A247C00FD6219 /* DivingComputerViews */ = {
+			isa = PBXGroup;
+			children = (
+				4364D89429139A3200FD6219 /* DivingComputerView.swift */,
+				4364D8BE291A253E00FD6219 /* AscendingGraphView.swift */,
+			);
+			path = DivingComputerViews;
+			sourceTree = "<group>";
+		};
+		4364D8C0291A3FC900FD6219 /* AirplaneModeViews */ = {
+			isa = PBXGroup;
+			children = (
+				4364D8C1291A3FF100FD6219 /* CheckingAirplaneModeView.swift */,
+			);
+			path = AirplaneModeViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -334,10 +356,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4364D8BC2919257F00FD6219 /* ViewController.swift in Sources */,
+				4364D8C2291A3FF100FD6219 /* CheckingAirplaneModeView.swift in Sources */,
 				4364D8A32913B58200FD6219 /* FrameView.swift in Sources */,
 				4364D8A82913B7DF00FD6219 /* CGImageExtension.swift in Sources */,
-				4364D89529139A3200FD6219 /* ComputerArea.swift in Sources */,
+				4364D89529139A3200FD6219 /* DivingComputerView.swift in Sources */,
 				4364D86B2913963500FD6219 /* DiveMainView.swift in Sources */,
+				4364D8BF291A253E00FD6219 /* AscendingGraphView.swift in Sources */,
 				4364D8692913963500FD6219 /* Diveroid300App.swift in Sources */,
 				4364D89929139B7600FD6219 /* Constants.swift in Sources */,
 				4364D8AC2913DAE700FD6219 /* ButtonsView.swift in Sources */,

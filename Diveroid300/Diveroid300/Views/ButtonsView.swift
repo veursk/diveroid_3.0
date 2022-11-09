@@ -15,12 +15,13 @@ struct ButtonsView: View {
     @Binding var isZoomAngleSelected: Bool
     @Binding var isSelfieAngleSelected: Bool
     @Binding var isEcoModeOn: Bool
+    @Binding var isRecording: Bool
 
     var body: some View {
         VStack(spacing: 30){
             topButtonView(showOptionsCells: $showOptionsCells, isWideAngleSelected: $isWideAngleSelected, isNormalAngleSelected: $isNormalAngleSelected, isZoomAngleSelected: $isZoomAngleSelected, isSelfieAngleSelected: $isSelfieAngleSelected, isEcoModeOn: $isEcoModeOn)
                 .position(CGPoint(x: 730, y: 100))
-            middleButtonView(showOptionsCells: $showOptionsCells)
+            middleButtonView(showOptionsCells: $showOptionsCells, isEcoModeOn: $isEcoModeOn, isRecording: $isRecording)
                 .position(CGPoint(x: 780, y: 70))
             bottomButtonView()
                 .position(CGPoint(x: 730, y: 40))
@@ -58,10 +59,12 @@ struct topButtonView: View {
 
             }))
             .simultaneousGesture(TapGesture().onEnded({
+               
                 if !showOptionsCells {
                     showOptionsCells.toggle()
                 }
                 else {
+                    
                     if isWideAngleSelected {
                         isNormalAngleSelected.toggle()
                         isWideAngleSelected.toggle()
@@ -88,6 +91,9 @@ struct topButtonView: View {
 struct middleButtonView: View {
     
     @Binding var showOptionsCells: Bool
+    @Binding var isEcoModeOn: Bool
+    @Binding var isRecording: Bool
+
     
     var body: some View {
         ZStack{
@@ -104,13 +110,35 @@ struct middleButtonView: View {
             })
             .simultaneousGesture(LongPressGesture(minimumDuration: 1)
                 .onEnded({ _ in
-                    if !CameraManager.shared.isRecording {
-                        CameraManager.shared.setRecording()
-                        CameraManager.shared.startRecording()
+                    if isEcoModeOn {
+                        CameraManager.shared.ecoMode()
+                        isEcoModeOn.toggle()
                     } else {
-                        CameraManager.shared.stopRecording()
+                        if !CameraManager.shared.isRecording {
+                            CameraManager.shared.setRecording()
+                            isRecording = true
+                            CameraManager.shared.startRecording()
+                        } else {
+                            CameraManager.shared.stopRecording()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                                       isRecording = false
+                                   })
+                            }
+                        }
                     }
-                }))
+                ))
+            .simultaneousGesture(TapGesture().onEnded({
+                if isEcoModeOn {
+                    CameraManager.shared.ecoMode()
+                    isEcoModeOn.toggle()
+                } else {
+                    if showOptionsCells {
+                        showOptionsCells.toggle()
+                    } else {
+                        FrameManager.shared.isSavingFrame = true
+                    }
+                }
+            }))
         }
     }
 }
@@ -142,7 +170,8 @@ struct ButtonsView_Previews: PreviewProvider {
                     isNormalAngleSelected: .constant(false),
                     isZoomAngleSelected: .constant(false),
                     isSelfieAngleSelected: .constant(false),
-                    isEcoModeOn: .constant(false))
+                    isEcoModeOn: .constant(false)
+                    , isRecording: .constant(false))
     }
 }
 

@@ -29,8 +29,8 @@ struct FrameView: View {
                            alignment: .center)
                     .clipped()
                 }
-                Circle()
-                    .foregroundColor(.red)
+//                Circle()
+//                    .foregroundColor(.red)
 
             } else {
                 Color.black

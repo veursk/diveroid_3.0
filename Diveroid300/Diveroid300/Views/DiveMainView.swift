@@ -10,7 +10,6 @@ import SwiftUI
 struct DiveMainView: View {
     
     @StateObject private var model = DiveMainViewModel()
-    @StateObject private var manager = CameraManager.shared
     
     @State var showOptionCells = false
     @State var isWideAngleSelected: Bool = true
@@ -18,20 +17,35 @@ struct DiveMainView: View {
     @State var isZoomAngleSelected: Bool = false
     @State var isSelfieAngleSelected: Bool = false
     @State var isEcoModeOn: Bool = false
+    @State var isRecording: Bool = false
     
     
-
+    
     var body: some View {
         ZStack {
-            if manager.isRecording {
+//            if isRecording {
+//                ZStack{
+//                    PreviewController()
+//                    Circle()
+//                        .foregroundColor(.blue)
+//                }
+//            } else {
+//                FrameView(isEcoModeOn: $isEcoModeOn, image: model.frame)
+//                    .edgesIgnoringSafeArea(.all)
+//            }
+            if isRecording{
                 ZStack{
                     PreviewController()
-                    Circle()
-                        .foregroundColor(.blue)
+                   
                 }
+
+
             } else {
-                FrameView(isEcoModeOn: $isEcoModeOn, image: model.frame)
-                    .edgesIgnoringSafeArea(.all)
+                ZStack{
+                    FrameView(isEcoModeOn: $isEcoModeOn, image: model.frame)
+                        .edgesIgnoringSafeArea(.all)
+                    
+                }
             }
             if showOptionCells {
                 TopButtonInteractionView(
@@ -47,12 +61,14 @@ struct DiveMainView: View {
                             isNormalAngleSelected: $isNormalAngleSelected,
                             isZoomAngleSelected: $isZoomAngleSelected,
                             isSelfieAngleSelected: $isSelfieAngleSelected,
-                isEcoModeOn: $isEcoModeOn)
+                            isEcoModeOn: $isEcoModeOn, isRecording: $isRecording)
             }
             ErrorView(error: model.error)
         }
+        
     }
 }
+
 
 
 struct ContentView_Previews: PreviewProvider {

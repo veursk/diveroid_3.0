@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     
     
     override func viewDidLoad() {
+        print("View Did Load")
         screenRect = UIScreen.main.bounds
         previewLayer = AVCaptureVideoPreviewLayer(session: CameraManager.shared.session)
         previewLayer.frame = CGRect(x: 0, y: 0, width: screenRect.size.width, height: screenRect.size.height)
@@ -27,6 +28,15 @@ class ViewController: UIViewController {
             self!.view.layer.addSublayer(self!.previewLayer)
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        print("View Will Disappear")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        print("View Did Disappear")
+    }
+    
 }
 
 struct PreviewController: UIViewControllerRepresentable {

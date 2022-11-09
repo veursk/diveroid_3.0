@@ -7,11 +7,17 @@
 
 import SwiftUI
 
-struct ComputerArea: View {
+struct DivingComputerView: View {
     var body: some View {
         ZStack{
             Color("ComputerAreaBackgroundColor")
-            centerBodyView()
+            HStack{
+                VStack{
+                    AscendingGraphView(name: "AscendingSpeed(6)")
+                    Spacer()
+                }
+                centerBodyView()
+            }
         }
         .frame(width: 127, height: 234)
     }
@@ -141,8 +147,8 @@ struct waterTemperatureNumberView: View {
 //20221103 Weight 설정 아직 안함
 //20221103 NDL 초로 가져오자 (Int)
 
-struct ComputerArea_Previews: PreviewProvider {
+struct DivingComputerView_Previews: PreviewProvider {
     static var previews: some View {
-        ComputerArea()
+        DivingComputerView()
     }
 }
