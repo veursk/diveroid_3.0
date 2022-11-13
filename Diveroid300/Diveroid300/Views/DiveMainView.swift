@@ -10,14 +10,14 @@ import SwiftUI
 struct DiveMainView: View {
     
     @StateObject private var model = DiveMainViewModel()
-    
+
     @State var showOptionCells = false
     @State var isWideAngleSelected: Bool = true
     @State var isNormalAngleSelected: Bool = false
     @State var isZoomAngleSelected: Bool = false
     @State var isSelfieAngleSelected: Bool = false
     @State var isEcoModeOn: Bool = false
-    @State var isRecording: Bool = false
+    @State var isRecording: Bool = true
     
     
     
@@ -35,7 +35,7 @@ struct DiveMainView: View {
 //            }
             if isRecording{
                 ZStack{
-                    PreviewController()
+                    FilteredVideoPreviewView()
                    
                 }
 

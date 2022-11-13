@@ -10,6 +10,8 @@ import Photos
 import UIKit
 import MobileCoreServices
 import UniformTypeIdentifiers
+/// 필터 테스트
+import GPUImage
 
 class FrameManager: NSObject, ObservableObject {
     
@@ -22,6 +24,10 @@ class FrameManager: NSObject, ObservableObject {
     let processingQueue = DispatchQueue(label: "photoProcessingQueue", attributes: [], autoreleaseFrequency: .workItem)
     /// 공부 필요
     
+    /// 필터
+    
+    
+    
     private override init() {
         super.init()
         CameraManager.shared.set(self, queue: videoOutputQueue)
@@ -33,6 +39,8 @@ extension FrameManager: AVCaptureVideoDataOutputSampleBufferDelegate {
     /// Frame Capture하는 함수
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        
+        
         if let buffer = sampleBuffer.imageBuffer {
             DispatchQueue.main.async {
                 self.current = buffer
@@ -58,6 +66,7 @@ extension FrameManager: AVCaptureVideoDataOutputSampleBufferDelegate {
         
         let finalImage = UIImage(cgImage: cgImage)
         
+    
         PHPhotoLibrary.requestAuthorization { status in
             if status == .authorized {
                 PHPhotoLibrary.shared().performChanges {

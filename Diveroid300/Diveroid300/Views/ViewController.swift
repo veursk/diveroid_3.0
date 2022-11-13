@@ -41,10 +41,11 @@ class ViewController: UIViewController {
 
 struct PreviewController: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> some UIViewController {
-        return ViewController()
+        return UIViewController()
     }
     
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
         
     }
 }
+

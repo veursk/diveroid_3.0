@@ -28,6 +28,11 @@
 		4364D8BC2919257F00FD6219 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8BB2919257F00FD6219 /* ViewController.swift */; };
 		4364D8BF291A253E00FD6219 /* AscendingGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8BE291A253E00FD6219 /* AscendingGraphView.swift */; };
 		4364D8C2291A3FF100FD6219 /* CheckingAirplaneModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4364D8C1291A3FF100FD6219 /* CheckingAirplaneModeView.swift */; };
+		43C3CC4D291E255B00008527 /* pratice.metal in Sources */ = {isa = PBXBuildFile; fileRef = 43C3CC4C291E255B00008527 /* pratice.metal */; };
+		43C3CC4F291E25DE00008527 /* filterPractice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3CC4E291E25DE00008527 /* filterPractice.swift */; };
+		43C3CC70291FB83600008527 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C3CC6B291FB80600008527 /* GPUImage.framework */; };
+		43C3CC71291FB86200008527 /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 43C3CC6B291FB80600008527 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		43C3CC77291FEBEC00008527 /* FilteredPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3CC76291FEBEC00008527 /* FilteredPhotoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,7 +50,41 @@
 			remoteGlobalIDString = 4364D8642913963500FD6219;
 			remoteInfo = Diveroid300;
 		};
+		43C3CC6A291FB80600008527 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43C3CC65291FB80600008527 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCE0BE7C20D6DE610006E120;
+			remoteInfo = GPUImage_iOS;
+		};
+		43C3CC6C291FB80600008527 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43C3CC65291FB80600008527 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCE0BE8C20D6E2B80006E120;
+			remoteInfo = GPUImage_macOS;
+		};
+		43C3CC6E291FB82100008527 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 43C3CC65291FB80600008527 /* GPUImage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BCE0BE7B20D6DE610006E120;
+			remoteInfo = GPUImage_iOS;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		43C3CC5E291E367A00008527 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				43C3CC71291FB86200008527 /* GPUImage.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4364D8652913963500FD6219 /* Diveroid300.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Diveroid300.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,6 +111,10 @@
 		4364D8BB2919257F00FD6219 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4364D8BE291A253E00FD6219 /* AscendingGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AscendingGraphView.swift; sourceTree = "<group>"; };
 		4364D8C1291A3FF100FD6219 /* CheckingAirplaneModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckingAirplaneModeView.swift; sourceTree = "<group>"; };
+		43C3CC4C291E255B00008527 /* pratice.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = pratice.metal; sourceTree = "<group>"; };
+		43C3CC4E291E25DE00008527 /* filterPractice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterPractice.swift; sourceTree = "<group>"; };
+		43C3CC65291FB80600008527 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = "../../Downloads/GPUImage3-master/framework/GPUImage.xcodeproj"; sourceTree = "<group>"; };
+		43C3CC76291FEBEC00008527 /* FilteredPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredPhotoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43C3CC70291FB83600008527 /* GPUImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,10 +146,12 @@
 		4364D85C2913963500FD6219 = {
 			isa = PBXGroup;
 			children = (
+				43C3CC65291FB80600008527 /* GPUImage.xcodeproj */,
 				4364D8672913963500FD6219 /* Diveroid300 */,
 				4364D8782913963900FD6219 /* Diveroid300Tests */,
 				4364D8822913963900FD6219 /* Diveroid300UITests */,
 				4364D8662913963500FD6219 /* Products */,
+				43C3CC5C291E35B400008527 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -123,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				4364D8682913963500FD6219 /* Diveroid300App.swift */,
+				43C3CC4B291E253600008527 /* Filter */,
 				4364D89B2913AC6100FD6219 /* Camera */,
 				4364D8A62913B7C700FD6219 /* Extensions */,
 				4364D89729139B5600FD6219 /* Models */,
@@ -164,6 +211,7 @@
 				4364D86A2913963500FD6219 /* DiveMainView.swift */,
 				4364D8AB2913DAE700FD6219 /* ButtonsView.swift */,
 				4364D8BB2919257F00FD6219 /* ViewController.swift */,
+				43C3CC76291FEBEC00008527 /* FilteredPhotoView.swift */,
 				4364D8A22913B58200FD6219 /* FrameView.swift */,
 				4364D8A92913B8DA00FD6219 /* ErrorView.swift */,
 				4364D8AE2914901500FD6219 /* TopButtonInteractionView.swift */,
@@ -225,6 +273,31 @@
 			path = AirplaneModeViews;
 			sourceTree = "<group>";
 		};
+		43C3CC4B291E253600008527 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				43C3CC4C291E255B00008527 /* pratice.metal */,
+				43C3CC4E291E25DE00008527 /* filterPractice.swift */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
+		43C3CC5C291E35B400008527 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		43C3CC66291FB80600008527 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				43C3CC6B291FB80600008527 /* GPUImage.framework */,
+				43C3CC6D291FB80600008527 /* GPUImage.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -235,10 +308,12 @@
 				4364D8612913963500FD6219 /* Sources */,
 				4364D8622913963500FD6219 /* Frameworks */,
 				4364D8632913963500FD6219 /* Resources */,
+				43C3CC5E291E367A00008527 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				43C3CC6F291FB82100008527 /* PBXTargetDependency */,
 			);
 			name = Diveroid300;
 			productName = Diveroid300;
@@ -315,6 +390,12 @@
 			mainGroup = 4364D85C2913963500FD6219;
 			productRefGroup = 4364D8662913963500FD6219 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 43C3CC66291FB80600008527 /* Products */;
+					ProjectRef = 43C3CC65291FB80600008527 /* GPUImage.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				4364D8642913963500FD6219 /* Diveroid300 */,
@@ -323,6 +404,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		43C3CC6B291FB80600008527 /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = 43C3CC6A291FB80600008527 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		43C3CC6D291FB80600008527 /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = 43C3CC6C291FB80600008527 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		4364D8632913963500FD6219 /* Resources */ = {
@@ -359,15 +457,18 @@
 				4364D8C2291A3FF100FD6219 /* CheckingAirplaneModeView.swift in Sources */,
 				4364D8A32913B58200FD6219 /* FrameView.swift in Sources */,
 				4364D8A82913B7DF00FD6219 /* CGImageExtension.swift in Sources */,
+				43C3CC4D291E255B00008527 /* pratice.metal in Sources */,
 				4364D89529139A3200FD6219 /* DivingComputerView.swift in Sources */,
 				4364D86B2913963500FD6219 /* DiveMainView.swift in Sources */,
 				4364D8BF291A253E00FD6219 /* AscendingGraphView.swift in Sources */,
+				43C3CC77291FEBEC00008527 /* FilteredPhotoView.swift in Sources */,
 				4364D8692913963500FD6219 /* Diveroid300App.swift in Sources */,
 				4364D89929139B7600FD6219 /* Constants.swift in Sources */,
 				4364D8AC2913DAE700FD6219 /* ButtonsView.swift in Sources */,
 				4364D8AF2914901500FD6219 /* TopButtonInteractionView.swift in Sources */,
 				4364D8A52913B6D500FD6219 /* DiveMainViewModel.swift in Sources */,
 				4364D89D2913AC9E00FD6219 /* CameraManager.swift in Sources */,
+				43C3CC4F291E25DE00008527 /* filterPractice.swift in Sources */,
 				4364D8A12913B28000FD6219 /* FrameManager.swift in Sources */,
 				4364D89F2913ACEB00FD6219 /* CameraError.swift in Sources */,
 				4364D8AA2913B8DA00FD6219 /* ErrorView.swift in Sources */,
@@ -403,6 +504,11 @@
 			isa = PBXTargetDependency;
 			target = 4364D8642913963500FD6219 /* Diveroid300 */;
 			targetProxy = 4364D8802913963900FD6219 /* PBXContainerItemProxy */;
+		};
+		43C3CC6F291FB82100008527 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GPUImage_iOS;
+			targetProxy = 43C3CC6E291FB82100008527 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

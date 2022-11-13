@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ButtonsView: View {
     
+   
     @Binding var showOptionsCells: Bool
     @Binding var isWideAngleSelected: Bool
     @Binding var isNormalAngleSelected: Bool
@@ -144,6 +145,7 @@ struct middleButtonView: View {
 }
 
 struct bottomButtonView: View {
+    
     var body: some View {
         ZStack{
           Circle()
