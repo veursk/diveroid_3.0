@@ -17,6 +17,7 @@ struct ButtonsView: View {
     @Binding var isSelfieAngleSelected: Bool
     @Binding var isEcoModeOn: Bool
     @Binding var isRecording: Bool
+    @Binding var isFiltering: Bool
 
     var body: some View {
         VStack(spacing: 30){
@@ -24,7 +25,7 @@ struct ButtonsView: View {
                 .position(CGPoint(x: 730, y: 100))
             middleButtonView(showOptionsCells: $showOptionsCells, isEcoModeOn: $isEcoModeOn, isRecording: $isRecording)
                 .position(CGPoint(x: 780, y: 70))
-            bottomButtonView()
+            bottomButtonView(isFiltering: $isFiltering)
                 .position(CGPoint(x: 730, y: 40))
         }
     }
@@ -146,6 +147,8 @@ struct middleButtonView: View {
 
 struct bottomButtonView: View {
     
+    @Binding var isFiltering: Bool
+
     var body: some View {
         ZStack{
           Circle()
@@ -153,7 +156,8 @@ struct bottomButtonView: View {
             .opacity(0.2)
             .frame(width: 94.0, height: 94.0)
           Button(action: {
-              CameraManager.shared.focus()
+//              CameraManager.shared.focus()
+              isFiltering.toggle()
           },
                  label: {
             Circle()
@@ -173,7 +177,7 @@ struct ButtonsView_Previews: PreviewProvider {
                     isZoomAngleSelected: .constant(false),
                     isSelfieAngleSelected: .constant(false),
                     isEcoModeOn: .constant(false)
-                    , isRecording: .constant(false))
+                    , isRecording: .constant(false), isFiltering: .constant(false))
     }
 }
 
