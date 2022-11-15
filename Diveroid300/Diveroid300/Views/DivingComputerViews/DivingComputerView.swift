@@ -12,13 +12,14 @@ struct DivingComputerView: View {
     
     @Binding var depth: Float
     @Binding var temperature: Float
+    @Binding var velocity: Float
     
     var body: some View {
         ZStack{
             Color("ComputerAreaBackgroundColor")
             HStack{
                 VStack{
-                    AscendingGraphView(name: "AscendingSpeed(6)")
+                    AscendingGraphView(velocity: $velocity)
                     Spacer()
                 }
                 centerBodyView(depth: $depth, temperature: $temperature)
@@ -157,6 +158,6 @@ struct waterTemperatureNumberView: View {
 
 struct DivingComputerView_Previews: PreviewProvider {
     static var previews: some View {
-        DivingComputerView(depth: .constant(42.5), temperature: .constant(25.4))
+        DivingComputerView(depth: .constant(42.5), temperature: .constant(25.4), velocity: .constant(6))
     }
 }

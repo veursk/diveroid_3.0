@@ -21,9 +21,16 @@ class DivingDataManager: NSObject, ObservableObject {
     public var ndl: Int = 0
     public var battery: Int = 0
     public var brightness: CGFloat = UIScreen.main.brightness
+    public var velocity: Float = 0.0
+    
+
+    //시간관련
+    public var curTime: Float = 0.0
     
     //계산용
     public var surfaceHpaPressure: Float = 1013.25
+    
+    public var receivedData = [ReceivedData]()
     
     public override init() {
         super.init()
@@ -48,16 +55,65 @@ extension DivingDataManager {
         let depth: Float = (pressure * 1000.0 - pAir) / (specGravWater * gravAcc / 100.0)
         return depth < 0 ? 0 : depth
     }
+    
+    public func ascendingVelocity() {
+        
+        if receivedData.count <= 1 {
+            return
+        }
+        
+        let checkSeconds: Float = 18
+        let lastIndex = receivedData.count - 1
+        let gabSeconds = receivedData[lastIndex].time - receivedData[0].time
+        
+        var depthSum: Float = 0
+        var timeSum: Float = 0
+        var checkedCnt: Int = 0
+        
+        if(gabSeconds >= checkSeconds) {
+            for i in 0..<(receivedData.count-1) {
+                let recv1 = receivedData[lastIndex-i-1]
+                let recv2 = receivedData[lastIndex-i]
+                depthSum += (recv2.depth - recv1.depth)
+                timeSum += (recv2.time - recv1.time)
+                
+                checkedCnt += 1
+                
+                if timeSum >= checkSeconds {
+                    break
+                }
+            }
+            
+            velocity = -depthSum * (Float(60) / timeSum)
+            print("velocity \(velocity)")
+        }
+        
+    }
 }
 
 extension DivingDataManager {
     public func passDataFromBluetooth(pressure: Float, temperature: Float, battery: Int) {
         DispatchQueue.global(qos: .utility).sync {
+
             self.depth = pressureToDepthMetric(pressure: pressure)
             self.temperature = temperature
             /// 배터리 메서드 필요
             self.battery = battery
+
+            receivedData.append(ReceivedData(curTime, depth))
+            ascendingVelocity()
         }
+    }
+}
+
+
+//다이빙데이터 저장용(상승속도계산 및 혹시몰라서..)
+class ReceivedData {
+    var time: Float = 0.0
+    var depth: Float = 0.0
+    init(_ time: Float, _ depth: Float) {
+        self.time = time
+        self.depth = depth
     }
 }
 

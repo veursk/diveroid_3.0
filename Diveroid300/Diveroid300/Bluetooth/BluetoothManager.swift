@@ -98,11 +98,12 @@ extension BluetoothManager: CBPeripheralDelegate {
         }
     }
     
+    
+    // 테스트하려고 블루투스 연결 시점부터 시간 계속 잡음
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         /// global, sync 동시성 잡은 이유...?
         DispatchQueue.global(qos: .utility).sync {
             if let deviceData = characteristic.value {
-                
                 var pressure = Float((UInt16(deviceData[0]) << 8) | UInt16(deviceData[1])) / 1000.0
                 pressure = pressure < 0 ? 1.013 + pressure : pressure
                 
@@ -117,6 +118,9 @@ extension BluetoothManager: CBPeripheralDelegate {
                 DivingDataManager.shared.passDataFromBluetooth(pressure: pressure, temperature: temperature, battery: battery)
                 print(DivingDataManager.shared.depth)
                 print(DivingDataManager.shared.temperature)
+                
+                DivingDataManager.shared.curTime += 3
+                print("CurTime: \(DivingDataManager.shared.curTime)")
             }
         }
     }

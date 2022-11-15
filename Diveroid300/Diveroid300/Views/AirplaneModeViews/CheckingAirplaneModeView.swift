@@ -18,10 +18,13 @@ struct CheckingAirplaneModeView: View {
                 .foregroundColor(.white)
             VStack{
                 AirplaneCircleImage()
+                    .padding(.bottom)
                 BigText(string: "잠깐! 비행기 모드를 켜주세요.")
+                    .padding(.bottom)
                 ContentText(string: "비행기 모드가 켜져 있어야")
                 ContentText(string: "배터리가 급속히 소진되는 것을 방지해")
                 ContentText(string: "안전하게 다이빙을 할 수 있어요.")
+                    .padding(.bottom)
                 StopDivingModeText(string: "다이빙 모드 종료")
             }
         }

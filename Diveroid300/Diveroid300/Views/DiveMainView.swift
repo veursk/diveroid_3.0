@@ -21,7 +21,8 @@ struct DiveMainView: View {
     @State var isRecording: Bool = false
     @State var isFiltering: Bool = false
     
-    var manager = BluetoothManager.shared
+//    var manager = BluetoothManager.shared
+    var airplaneModeModel = AirplaneModeModel.shared
 
     
     var body: some View {
@@ -34,6 +35,9 @@ struct DiveMainView: View {
             } else {
                 FilteredVideoPreviewView()
             }
+            if !airplaneModeModel.isAirplaneModeOn {
+                CheckingAirplaneModeView()
+            }
             if showOptionCells {
                 TopButtonInteractionView(
                     isWideAngleSelected: $isWideAngleSelected,
@@ -42,7 +46,7 @@ struct DiveMainView: View {
                     isSelfieAngleSelected: $isSelfieAngleSelected)
             }
             HStack{
-                DivingComputerView(depth: $divingDataManager.depth, temperature: $divingDataManager.temperature)
+                DivingComputerView(depth: $divingDataManager.depth, temperature: $divingDataManager.temperature, velocity: $divingDataManager.velocity)
                 Spacer()
             }
                 ButtonsView(showOptionsCells: $showOptionCells,
