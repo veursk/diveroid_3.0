@@ -33,6 +33,7 @@
 		43F217E72921B642003C4B16 /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F217DF2921B54F003C4B16 /* GPUImage.framework */; };
 		43F217E82921B64D003C4B16 /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 43F217DF2921B54F003C4B16 /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43F217EF292231D3003C4B16 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F217EE292231D3003C4B16 /* BluetoothManager.swift */; };
+		43F217F929231492003C4B16 /* DivingDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F217F829231492003C4B16 /* DivingDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 		43C3CC76291FEBEC00008527 /* FilteredPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredPhotoView.swift; sourceTree = "<group>"; };
 		43F217D92921B54F003C4B16 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = "../../../Documents/diveroid2.0_test2nd/diveroid_ios/DiveroidRenewal-iOS/Application/Dive/DiveComputer/DiveComponent/WaterFilter/framework/GPUImage.xcodeproj"; sourceTree = "<group>"; };
 		43F217EE292231D3003C4B16 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
+		43F217F829231492003C4B16 /* DivingDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DivingDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 		4364D8672913963500FD6219 /* Diveroid300 */ = {
 			isa = PBXGroup;
 			children = (
+				43F217F729231473003C4B16 /* DivingDataManager */,
 				43F217ED292231B8003C4B16 /* Bluetooth */,
 				43F217D92921B54F003C4B16 /* GPUImage.xcodeproj */,
 				4364D8682913963500FD6219 /* Diveroid300App.swift */,
@@ -304,6 +307,14 @@
 				43F217EE292231D3003C4B16 /* BluetoothManager.swift */,
 			);
 			path = Bluetooth;
+			sourceTree = "<group>";
+		};
+		43F217F729231473003C4B16 /* DivingDataManager */ = {
+			isa = PBXGroup;
+			children = (
+				43F217F829231492003C4B16 /* DivingDataManager.swift */,
+			);
+			path = DivingDataManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -465,6 +476,7 @@
 				4364D8C2291A3FF100FD6219 /* CheckingAirplaneModeView.swift in Sources */,
 				4364D8A32913B58200FD6219 /* FrameView.swift in Sources */,
 				43F217EF292231D3003C4B16 /* BluetoothManager.swift in Sources */,
+				43F217F929231492003C4B16 /* DivingDataManager.swift in Sources */,
 				4364D8A82913B7DF00FD6219 /* CGImageExtension.swift in Sources */,
 				4364D89529139A3200FD6219 /* DivingComputerView.swift in Sources */,
 				4364D86B2913963500FD6219 /* DiveMainView.swift in Sources */,
@@ -646,6 +658,8 @@
 				DEVELOPMENT_TEAM = GMFX87CRW9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app need";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app need";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app need...";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app need...";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app need...";
@@ -678,6 +692,8 @@
 				DEVELOPMENT_TEAM = GMFX87CRW9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app need";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app need";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app need...";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app need...";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app need...";

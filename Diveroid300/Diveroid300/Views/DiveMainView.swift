@@ -10,6 +10,7 @@ import SwiftUI
 struct DiveMainView: View {
     
     @StateObject private var model = DiveMainViewModel()
+    @ObservedObject var divingDataManager = DivingDataManager.shared
     
     @State var showOptionCells = false
     @State var isWideAngleSelected: Bool = true
@@ -20,20 +21,11 @@ struct DiveMainView: View {
     @State var isRecording: Bool = false
     @State var isFiltering: Bool = false
     
-    
+    var manager = BluetoothManager.shared
+
     
     var body: some View {
         ZStack {
-            //            if isRecording {
-            //                ZStack{
-            //                    PreviewController()
-            //                    Circle()
-            //                        .foregroundColor(.blue)
-            //                }
-            //            } else {
-            //                FrameView(isEcoModeOn: $isEcoModeOn, image: model.frame)
-            //                    .edgesIgnoringSafeArea(.all)
-            //            }
             if !isFiltering{
                 ZStack{
                     FrameView(isEcoModeOn: $isEcoModeOn, image: model.frame)
@@ -50,14 +42,15 @@ struct DiveMainView: View {
                     isSelfieAngleSelected: $isSelfieAngleSelected)
             }
             HStack{
+                DivingComputerView(depth: $divingDataManager.depth, temperature: $divingDataManager.temperature)
                 Spacer()
+            }
                 ButtonsView(showOptionsCells: $showOptionCells,
                             isWideAngleSelected: $isWideAngleSelected,
                             isNormalAngleSelected: $isNormalAngleSelected,
                             isZoomAngleSelected: $isZoomAngleSelected,
                             isSelfieAngleSelected: $isSelfieAngleSelected,
                             isEcoModeOn: $isEcoModeOn, isRecording: $isRecording, isFiltering: $isFiltering)
-            }
             ErrorView(error: model.error)
         }
         

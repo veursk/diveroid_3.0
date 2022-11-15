@@ -6,8 +6,13 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct DivingComputerView: View {
+    
+    @Binding var depth: Float
+    @Binding var temperature: Float
+    
     var body: some View {
         ZStack{
             Color("ComputerAreaBackgroundColor")
@@ -16,7 +21,7 @@ struct DivingComputerView: View {
                     AscendingGraphView(name: "AscendingSpeed(6)")
                     Spacer()
                 }
-                centerBodyView()
+                centerBodyView(depth: $depth, temperature: $temperature)
             }
         }
         .frame(width: 127, height: 234)
@@ -27,17 +32,21 @@ struct DivingComputerView: View {
 
 struct centerBodyView: View {
     
+    @Binding var depth: Float
+    @Binding var temperature: Float
+    
+
     var body: some View {
         VStack(alignment: .leading){
             Spacer()
             depthTextView(string: "수심, m")
-            depthNumberView(depth: 26.5, integer: 26, decimal: 5)
+            depthNumberView(depth: $depth)
             ndlTextView(string: "NDL")
             ndlNumberView(ndlNumber: 42)
             divingTimeTextView(string: "다이빙 시간")
             divingTimeNumberView(ndlNumber: 42)
             waterTemperatureTextView(string: "수온")
-            waterTemperatureNumberView(waterTempNumber: 23)
+            waterTemperatureNumberView(temperature: $temperature)
             Spacer()
         }
 
@@ -58,16 +67,15 @@ struct depthTextView: View {
 }
 
 struct depthNumberView: View {
-    var depth: Double
-    var integer: Int
-    var decimal: Int
     
+    @Binding var depth: Float
+
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 0){
-            Text(String(integer))
+            Text(String(Int(floor(depth))))
                 .font(.largeTitle)
                 .foregroundColor(.white)
-            Text("." + String(decimal))
+            Text("." + String(Int((depth - floor(depth)) * 10)))
                 .font(.title2)
                 .foregroundColor(.white)
         }
@@ -133,10 +141,10 @@ struct divingTimeNumberView: View {
 }
 
 struct waterTemperatureNumberView: View {
-    var waterTempNumber: Int
-    
+    @Binding var temperature: Float
+
     var body: some View {
-        Text(String(waterTempNumber) + "°C")
+        Text(String(temperature) + "°C")
             .font(.subheadline)
             .foregroundColor(.white)
     }
@@ -149,6 +157,6 @@ struct waterTemperatureNumberView: View {
 
 struct DivingComputerView_Previews: PreviewProvider {
     static var previews: some View {
-        DivingComputerView()
+        DivingComputerView(depth: .constant(42.5), temperature: .constant(25.4))
     }
 }
